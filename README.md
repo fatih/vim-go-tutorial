@@ -80,6 +80,7 @@ things different:
 * Uses [vim-dispatch](https://github.com/tpope/vim-dispatch) if installed.
 * Runs async if used within NeoVim (coming soon to Vim as well!)
 
+# Fix it
 
 Let's introduce two errors by adding two compile errors:
 
@@ -114,65 +115,73 @@ Now you don't have to save your file anymore when you call `:GoBuild`.  If we
 introduce back the two errors and call `:GoBuild`, we can now iterate much more
 faster by only calling `:GoBuild`.
 
+`:GoBuild` jumps to the first error encountered. If you don't want to jump
+append the `!` (bang) sign: `:GoBuild!`.
+
+In all the `go` commands, such as `:GoRun`, `:GoInstall`, `:GoTest`, etc..,
+whenever there is an error the quickfix window always will pop up.
+
+# Test it
+
 
 ## Commands
 
-# Editing
-:GoImport
-:GoImportAs
-:GoDrop
-:GoFmt
-:GoImports
-:GoRename
-:GoImpl
-
 # Go Cmd
-:GoBuild
-:GoRun
-:GoInstall
-:GoGenerate
-:GoTest
-:GoTestFunc
-:GoTestCompile
-:GoCoverage
-:GoCoverageToggle
-:GoCoverageClear
-:GoCoverageBrowser
+* :GoBuild
+* :GoRun
+* :GoInstall
+* :GoGenerate
+* :GoTest
+* :GoTestFunc
+* :GoTestCompile
+* :GoCoverage
+* :GoCoverageToggle
+* :GoCoverageClear
+* :GoCoverageBrowser
+
+# Editing
+* :GoImport
+* :GoImportAs
+* :GoDrop
+* :GoFmt
+* :GoImports
+* :GoRename
+* :GoImpl
 
 # Lint
-:GoLint
-:GoVet
-:GoErrCheck
-:GoMetaLinter
+* :GoLint
+* :GoVet
+* :GoErrCheck
+* :GoMetaLinter
 
 # Documentation/Exploring
-:GoDoc
-:GoDocBrowser
-:GoAlternate
-:GoDecls
-:GoDeclsDir
-:GoDef
-:GoDefPop
-:GoDefStack
-:GoDefStackClear
+* :GoDoc
+* :GoDocBrowser
+* :GoAlternate
+* :GoDecls
+* :GoDeclsDir
+* :GoDef
+* :GoDefPop
+* :GoDefStack
+* :GoDefStackClear
 
-:GoInfo
-:GoCallees
-:GoCallers
-:GoDescribe
-:GoCallstack
-:GoFreevars
-:GoChannelPeers
-:GoReferrers
-:GoGuruScope
-:GoGuruTags
+* :GoInfo
+* :GoCallees
+* :GoCallers
+* :GoDescribe
+* :GoCallstack
+* :GoFreevars
+* :GoChannelPeers
+* :GoReferrers
+* :GoGuruScope
+* :GoGuruTags
 
 # Others
-:GoPath
-:GoFiles
-:GoDeps
-:GoPlay (accepts range)
+* :GoPath
+* :GoFiles
+* :GoDeps
+* :GoPlay (accepts range)
 
-:GoInstallBinaries
-:GoUpdateBinaries
-:AsmFmt
+* :GoInstallBinaries
+* :GoUpdateBinaries
+* :AsmFmt
