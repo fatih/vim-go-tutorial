@@ -106,7 +106,6 @@ Let us improve it a little bit. Vim has a setting called `autowrite` that
 writes the content of the file automatically if you call `:make`. vim-go also
 makes use of this setting. Open your `.vimrc` and add the following:
 
-
 ```
 set autowrite
 ```
@@ -121,7 +120,89 @@ append the `!` (bang) sign: `:GoBuild!`.
 In all the `go` commands, such as `:GoRun`, `:GoInstall`, `:GoTest`, etc..,
 whenever there is an error the quickfix window always will pop up.
 
+## .vimrc improvements:
+
+You can add some shorcuts to make it easier to jump between errors in quickfix
+list:
+
+```
+map <C-n> :cn<CR>
+map <C-m> :cp<CR>
+nnoremap <leader>a :cclose<CR>
+```
+
+I also use these shorcuts to build and run a Go program with `<leader>b` and
+`<leader>r`:
+
+```
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+```
+
 # Test it
+
+Let's write a simple function and a test that tests the function. Add the following:
+
+
+```
+func Bar() string {
+	return "bar"
+}
+```
+
+open a new file called `main_test.go` (it doesn't matter how you open it, from
+inside vim, a separate Vim session, etc.. it's up to you). Let us use the
+curent buffer and open it from vim via `:edit main_test.go`.
+
+When you open the new file you notice something. The file automatically has the
+package declaration added:
+
+```
+package main
+```
+
+This is done by vim-go automatically. This time it didn't create a sample
+application, instead it detected that the file is inside a valid package and
+therefore it created a file based on the package name (in our case the package
+name was `main`)
+
+Complement the test file with to the following code to:
+
+```
+package main
+
+import (
+	"testing"
+)
+
+func TestBar(t *testing.T) {
+	result := Bar()
+	if result != "bar" {
+		t.Errorf("expecting bar, got %s", result)
+	}
+}
+```
+
+And call `:GoTest`. You'll see the following message:
+
+```
+vim-go: [test] PASS
+```
+
+`:GoTest` calls `go test` under the hood. It has the same improvements just
+like we have for `:GoBuild`. If there is any test error, a quickfix list is
+opened again and you can jump to it easily.
+
+
+# Edit it (DRAFT)
+
+You'll see we get an error because the `testing` package is not imported
+(intentionally). We can easily go and edit the file, but instead we're going to
+use the vim command `:GoImport`. This command adds the given package to the
+import path. Run it via: `:GoImport testing`. You'll see the `testing` package
+is being added. We also have `:GoImportAs` and `:GoDrop` to edit the import
+paths. 
+
 
 
 ## Commands
