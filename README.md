@@ -193,6 +193,79 @@ vim-go: [test] PASS
 like we have for `:GoBuild`. If there is any test error, a quickfix list is
 opened again and you can jump to it easily.
 
+`:GoTest` by default times out after 10 seconds. This is useful because Vim is
+not async by default. You can change the timeout value with `let g:go_test_timeout = 10s`
+
+We have two more commands that makes it easy to deal with test files. The other
+one is `:GoTestFunc`. This only tests the function immediate to your cursor.
+Let us change the content of the test file (`main_test.go`) to:
+
+```
+package main
+
+import (
+	"testing"
+)
+
+func TestFoo(t *testing.T) {
+	t.Error("intentional error 1")
+}
+
+func TestBar(t *testing.T) {
+	result := Bar()
+	if result != "bar" {
+		t.Errorf("expecting bar, got %s", result)
+	}
+}
+
+func TestQuz(t *testing.T) {
+	t.Error("intentional error 2")
+}
+```
+
+Now when we call `:GoTest` a quickfix window wil be open with two errors.
+However if go inside the `TestBar` function and call `:GoTestFunc`, you'll see
+that our test passes!  This is really useful if you have a lot of tests that
+takes time and you only want to test certain tests.
+
+The other test related command is `:GoTestCompile`. Tests not only needs to
+pass with success, it also needs to compile without any problems.
+`:GoTestCompile` compiles your test file, just like `:GoBuild` and opens a
+quickfix if there is any errors. This however **doesn't run** the tests. This
+is very useful if you have a large test which you're editing a lot. Call
+`:GoTestCompile` in the current test file, you should see the following:
+
+```
+vim-go: [test] PASS
+```
+
+To make it seamless for any Go file we can create a simple Vim function that
+checks the type of the Go file, and execute `:GoBuild` or `:GoTestCompile`.
+Below is the helper function you can add to your `.vimrc` which does it:
+
+```
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  elseif l:file =~# '^\f\+_test\.go$'
+    call go#cmd#Test(0, 1)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+```
+
+Now whenever you hit `<leader>b`, where `<leader>` is by default the key `\`,
+it'll invoke the the above function. I've mapped my leader to `,` as I find it more useful with the following setting(put this in the beginning of .vimrc):
+
+```
+let mapleader = ","
+```
+
+So with this setting, we can easily build any test and non test files with `,b`.
+
 
 # Edit it (DRAFT)
 
