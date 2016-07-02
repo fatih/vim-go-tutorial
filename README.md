@@ -239,9 +239,26 @@ is very useful if you have a large test which you're editing a lot. Call
 vim-go: [test] PASS
 ```
 
-To make it seamless for any Go file we can create a simple Vim function that
-checks the type of the Go file, and execute `:GoBuild` or `:GoTestCompile`.
-Below is the helper function you can add to your `.vimrc` which does it:
+## .vimrc improvements
+
+* As with `:GoBuild` we can add a mapping to easily call `:GoTest` with a key
+combination. Add the following to your `.vimrc`:
+
+```
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+```
+
+* Let's make building Go files simpler. First, remove the following mapping we added
+  previously:
+
+```
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+```
+
+We're going to add a mapping that is better improved. To make it seamless for
+any Go file we can create a simple Vim function that checks the type of the Go
+file, and execute `:GoBuild` or `:GoTestCompile`.  Below is the helper function
+you can add to your `.vimrc` which does it:
 
 ```
 " run :GoBuild or :GoTestCompile based on the go file
@@ -257,8 +274,12 @@ endfunction
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 ```
 
-Now whenever you hit `<leader>b`, where `<leader>` is by default the key `\`,
-it'll invoke the the above function. I've mapped my leader to `,` as I find it more useful with the following setting(put this in the beginning of .vimrc):
+Now whenever you hit `<leader>b` it'll build either your Go file or it'll
+compile your test files seamlessly.
+
+* By default the leader shortcut is defined as: `\` I've mapped my leader to
+`,` as I find it more useful with the following setting(put this in the
+beginning of .vimrc):
 
 ```
 let mapleader = ","
@@ -266,6 +287,7 @@ let mapleader = ","
 
 So with this setting, we can easily build any test and non test files with `,b`.
 
+# Cover it
 
 # Edit it (DRAFT)
 
