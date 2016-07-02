@@ -398,31 +398,91 @@ autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
 With this you can easily call `:GoCoverageToggle` with `<leader>c`
 
 
-# Edit it (DRAFT)
+# Edit it
 
-You'll see we get an error because the `testing` package is not imported
-(intentionally). We can easily go and edit the file, but instead we're going to
-use the vim command `:GoImport`. This command adds the given package to the
-import path. Run it via: `:GoImport testing`. You'll see the `testing` package
-is being added. We also have `:GoImportAs` and `:GoDrop` to edit the import
-paths. 
+Let us start with a sample `main.go` file:
 
+```
+package main
+
+     import "fmt"
+
+func main() {
+ fmt.Println("    gophercon"     )
+}
+```
+
+Let's start with something we know already. If save the file, you'll see that
+it'll be formatted automatically. It's enabled by default but can be disables
+if wished (not sure why you would though :)) with `let g:go_fmt_autosave = 0`.
+Optionally we also provide `:GoFmt` command, which goes and runs `:GoFmt` under
+the hood.
+
+Let's print the `"gophercon"` string all uppercase. For it we're going to use
+the `strings` package. Change the definition to:
+
+```
+fmt.Println(strings.ToLower("Gopher"))
+```
+
+When you build it you'll get an error of course:
+
+```
+main.go|8| undefined: strings in strings.ToLower
+```
+
+You'l see we get an error because the `strings` package is not imported. Vim-go
+has couple of commands to make it easy to manipulate the import declarations.
+
+We can easily go and edit the file, but instead we're going to use the vim
+command `:GoImport`. This command adds the given package to the import path.
+Run it via: `:GoImport strings`. You'll see the `strings` package is being
+added.  The greatin thing about this command is that it also supports
+completion. So you can just type `:GoImport s` and hit tab.
+
+We also have `:GoImportAs` and `:GoDrop` to edit the import paths.
+`:GoImportAs` is the same as `:GoImport`, but it allowd to change the
+packagename. For example `:GoImportAs str strings`, will import `strings` with
+the package name `str.`
+
+Finally `:GoDrop` makes it easy to remove any import paths from the import
+declarations. `:GoDrop strings` will remove it from the import declarations.
+
+Of course manipulating import paths is so 2010. We have better tools to handle
+the case for us. If you didn't heard it yet, it's called `goimports`.
+`goimports` is a replacement for `gofmt`. You have two ways of using it. The
+first way (also recommended way) is telling vim-go to use it when saving the
+file:
+
+```
+let g:go_fmt_command = "goimports"
+```
+
+Now whenever you save your file, `goimports` will automatically format and also
+rewrite your import declarations. Some people do not prefer `goimports` as it
+might be slow on very large code bases. In this case we also have the
+`:GoImports` command (note the `s` at the end). With this, you can explicitly
+call `goimports`
+
+
+## .vimrc improvements:
+
+* Don't forget to change `gofmt` to `goimports`
+
+```
+let g:go_fmt_command = "goimports"
+```
+
+* When you save your file, `gofmt` shows any errors during parsing the file. If
+  there is any parse errors it'll show them inside a quickfix list. This is
+  enabled by default. Some people don't like it. To disable it add:
+
+```
+let g:go_fmt_fail_silently = 1
+```
 
 
 ## Commands
-
-# Go Cmd
-* :GoBuild
-* :GoRun
-* :GoInstall
-* :GoGenerate
-* :GoTest
-* :GoTestFunc
-* :GoTestCompile
-* :GoCoverage
-* :GoCoverageToggle
-* :GoCoverageClear
-* :GoCoverageBrowser
 
 # Editing
 * :GoImport
@@ -432,6 +492,9 @@ paths.
 * :GoImports
 * :GoRename
 * :GoImpl
+
+* af
+* if
 
 # Lint
 * :GoLint
@@ -449,8 +512,8 @@ paths.
 * :GoDefPop
 * :GoDefStack
 * :GoDefStackClear
-
 * :GoInfo
+
 * :GoCallees
 * :GoCallers
 * :GoDescribe
@@ -470,3 +533,17 @@ paths.
 * :GoInstallBinaries
 * :GoUpdateBinaries
 * :AsmFmt
+
+# Go Cmd
+* :GoBuild
+* :GoRun
+* :GoInstall
+* :GoGenerate
+* :GoTest
+* :GoTestFunc
+* :GoTestCompile
+* :GoCoverage
+* :GoCoverageToggle
+* :GoCoverageClear
+* :GoCoverageBrowser
+
