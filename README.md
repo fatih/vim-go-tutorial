@@ -193,6 +193,10 @@ vim-go: [test] PASS
 like we have for `:GoBuild`. If there is any test error, a quickfix list is
 opened again and you can jump to it easily.
 
+Another small improvement is that you don't have to open the test file itself.
+Try it yourself, open `main.go` and call `:GoTest`. You'll see the tests will
+be run for you as well.
+
 `:GoTest` by default times out after 10 seconds. This is useful because Vim is
 not async by default. You can change the timeout value with `let g:go_test_timeout = 10s`
 
@@ -248,6 +252,8 @@ combination. Add the following to your `.vimrc`:
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
 ```
 
+Now you can easily test your files via `<leader>t`
+
 * Let's make building Go files simpler. First, remove the following mapping we added
   previously:
 
@@ -288,6 +294,109 @@ let mapleader = ","
 So with this setting, we can easily build any test and non test files with `,b`.
 
 # Cover it
+
+Let's dive in even more in the world of tests. Tests are really important. Go
+has a really great way of showing the coverage of your source code. vim-go
+makes it easy to see the code coverage without leaving Vim in a very elegant
+way.
+
+
+Let's first change back our `main_test.go` file to:
+
+```
+package main
+
+import (
+	"testing"
+)
+
+func TestBar(t *testing.T) {
+	result := Bar()
+	if result != "bar" {
+		t.Errorf("expecting bar, got %s", result)
+	}
+}
+```
+
+And `main.go` to
+
+
+```
+package main
+
+func Bar() string {
+	return "bar"
+}
+
+func Foo() string {
+	return "foo"
+}
+
+func Qux(v string) string {
+	if v == "foo" {
+		return Foo()
+	}
+
+	if v == "bar" {
+		return Bar()
+	}
+
+	return "INVALID"
+}
+```
+
+Now let us call `:GoCoverage`. Under the hood this calls `go test -coverprofile
+tempfile`. It parses the lines from the profile and then dynamically changes
+the syntax of your source code to reflect the coverage. As you see, because we
+only have a test for the `Bar()` function, that is the only function it's
+green. 
+
+To clear the syntax highlighting you can call `:GoCoverageClear`. Let us add a
+test case and see how the coverage changes. Add the following to `main_test.go`
+to:
+
+```
+func TestQuz(t *testing.T) {
+	result := Qux("bar")
+	if result != "bar" {
+		t.Errorf("expecting bar, got %s", result)
+	}
+
+	result = Qux("qux")
+	if result != "INVALID" {
+		t.Errorf("expecting INVALID, got %s", result)
+	}
+}
+```
+
+If we call `:GoCoverage` again, you'll see that the `Quz` function is now
+tested as well and that it has a larger coverage. Call `:GoCoverageClear` again
+to clear the syntax highlighting.
+
+Because calling `:GoCoverage` and `:GoCoverageClear` are used a lot together,
+there is another command that makes it easy to call and clear the result. You
+can also use `:GoCoverageToggle`. This acts as a toggle and shows the coverage,
+and when called again it clears the coverage.  It's up to your workflow how you
+want to use them.
+
+Finally, if you don't like vim-go's internal view, you can also call
+`:GoCoverageBrowser`. Under the hood it uses `go tool cover` to create a HTML
+page and then opens it in your default browser. Some people like this more.
+
+Using the `:GoCoverageXXX` commands do not create any kind of temporary files.
+It doesn't pollute your workflow. So you don't have to deal with removing
+unwanted files everytime.
+
+## .vimrc improvements:
+
+Add the following to your `.vimrc`:
+
+```
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+```
+
+With this you can easily call `:GoCoverageToggle` with `<leader>c`
+
 
 # Edit it (DRAFT)
 
