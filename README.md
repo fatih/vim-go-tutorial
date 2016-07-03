@@ -481,6 +481,79 @@ let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 ```
 
+# Beautify it
+
+By default we only have a limited syntax highlighting enabled. There are two
+main reasons. First is that people don't like much color. They prefer less
+color as it causes to much distraction. The second reason is that it impacts
+the performance of Vim a lot. We need to enable them explicitly. First add the
+following settings to your `.vimrc`:
+
+
+```
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+```
+
+
+The following setting will highlight operators, such as :
+
+```
+let g:go_highlight_operators = 1
+```
+
+```
+let g:go_highlight_extra_types = 1
+```
+
+
+```
+let g:go_highlight_format_strings = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_string_spellcheck = 1
+let g:go_highlight_generate_tags = 0
+```
+
+
+## .vimrc improvements:
+
+* Some people don't like how the tabs are shown. By default Vim shows `8`
+  spaces for a single tab. However it's up to us how to represent in Vim. The
+  following will change it to show a single tab as 4 spaces:
+
+```
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+```
+
+This setting will not expand a tab into spaces. It'll show a single tab as `4`
+spaces. It will use `4` spaces to represent a single indent.
+
+* A lot of people ask for my colorscheme. I'm using a slightly modified
+`molokai`. To enable it add the a Plug directive just between the plug
+definitions:
+
+```
+call plug#begin()
+Plug 'fatih/vim-go'
+Plug 'fatih/molokai'
+call plug#end()
+```
+
+Also add the following to enable molokai with original color scheme and 256
+color version:
+
+```
+let g:rehash256 = 1
+let g:molokai_original = 1
+colorscheme molokai
+```
+
+After that restart your Vim and call `:PlugInstall`. This will pull the plugin
+and install it for you. After the plugin is installed, you need to restart Vim
+again.
+
 
 ## Commands
 
