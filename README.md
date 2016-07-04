@@ -4,18 +4,18 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
 
 # Table of Contents
 
-* [Quick Setup](#quick-setup)
-* [Hello World](#hello-world)
-* [Run it](#run-it)
-* [Build it](#build-it)
-* [Fix it](#fix-it)
-* [Test it](#test-it)
-* [Cover it](#cover-it)
-* [Edit it](#edit-it)
-* [Beautify it](#beautify-it)
-* [Check it](#check-it)
-* [Navigate it](#Navigate-it)
-* [Understand it](#Understand-it)
+1. [Quick Setup](#quick-setup)
+2. [Hello World](#hello-world)
+3. [Run it](#run-it)
+4. [Build it](#build-it)
+5. [Fix it](#fix-it)
+6. [Test it](#test-it)
+7. [Cover it](#cover-it)
+8. [Edit it](#edit-it)
+9. [Beautify it](#beautify-it)
+10. [Check it](#check-it)
+11. [Navigate it](#Navigate-it)
+12. [Understand it](#Understand-it)
 
 # Quick Setup
 
