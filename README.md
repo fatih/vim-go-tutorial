@@ -12,6 +12,10 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
 6. [Test it](#test-it)
 7. [Cover it](#cover-it)
 8. [Edit it](#edit-it)
+  * [Imports](#imports)
+  * [Text Objects](#text-objects)
+  * [Struct split/join](#struct-split-join)
+  * [Snippets](#snippets)
 9. [Beautify it](#beautify-it)
 10. [Check it](#check-it)
 11. [Navigate it](#Navigate-it)
@@ -135,7 +139,7 @@ append the `!` (bang) sign: `:GoBuild!`.
 In all the `go` commands, such as `:GoRun`, `:GoInstall`, `:GoTest`, etc..,
 whenever there is an error the quickfix window always will pop up.
 
-## .vimrc improvements:
+### .vimrc improvements:
 
 You can add some shorcuts to make it easier to jump between errors in quickfix
 list:
@@ -258,7 +262,7 @@ is very useful if you have a large test which you're editing a lot. Call
 vim-go: [test] PASS
 ```
 
-## .vimrc improvements
+### .vimrc improvements:
 
 * As with `:GoBuild` we can add a mapping to easily call `:GoTest` with a key
 combination. Add the following to your `.vimrc`:
@@ -402,7 +406,7 @@ Using the `:GoCoverageXXX` commands do not create any kind of temporary files.
 It doesn't pollute your workflow. So you don't have to deal with removing
 unwanted files everytime.
 
-## .vimrc improvements:
+### .vimrc improvements:
 
 Add the following to your `.vimrc`:
 
@@ -414,6 +418,8 @@ With this you can easily call `:GoCoverageToggle` with `<leader>c`
 
 
 # Edit it
+
+### Imports
 
 Let us start with a sample `main.go` file:
 
@@ -478,6 +484,9 @@ rewrite your import declarations. Some people do not prefer `goimports` as it
 might be slow on very large code bases. In this case we also have the
 `:GoImports` command (note the `s` at the end). With this, you can explicitly
 call `goimports`
+
+
+### Text objects
 
 Let us show more editing tips/tricks. There are two text objects that we can
 use to change functions. Those are `if` and `af`. `if` means inner function and
@@ -584,14 +593,15 @@ more details: [Treating Go types as objects in Vim](https://medium.com/@farslan/
 (Optional question: without looking at the `go/ast` package, is the doc comment
 a part of the function declaration or not?)
 
-
-TODO: 
-
-snippets (errn, errn)
+### Struct splits/join
 gJ,gS https://github.com/AndrewRadev/splitjoin.vim
 
+### Snippets
 
-## .vimrc improvements:
+snippets (errn, errn)
+
+
+### .vimrc improvements:
 
 * Don't forget to change `gofmt` to `goimports`
 
@@ -643,7 +653,7 @@ let g:go_highlight_generate_tags = 0
 ```
 
 
-## .vimrc improvements:
+### .vimrc improvements:
 
 * Some people don't like how the tabs are shown. By default Vim shows `8`
   spaces for a single tab. However it's up to us how to represent in Vim. The
