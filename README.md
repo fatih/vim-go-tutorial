@@ -36,7 +36,7 @@ git clone https://github.com/fatih/vim-go.git ~/.vim/plugged/vim-go
 
 Create `~/.vimrc` with following content:
 
-```
+```vim
 call plug#begin()
 Plug 'fatih/vim-go'
 call plug#end()
@@ -144,7 +144,7 @@ whenever there is an error the quickfix window always will pop up.
 You can add some shorcuts to make it easier to jump between errors in quickfix
 list:
 
-```
+```vim
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
 nnoremap <leader>a :cclose<CR>
@@ -153,7 +153,7 @@ nnoremap <leader>a :cclose<CR>
 I also use these shorcuts to build and run a Go program with `<leader>b` and
 `<leader>r`:
 
-```
+```vim
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 ```
@@ -176,7 +176,7 @@ curent buffer and open it from vim via `:edit main_test.go`.
 When you open the new file you notice something. The file automatically has the
 package declaration added:
 
-```
+```go
 package main
 ```
 
@@ -267,7 +267,7 @@ vim-go: [test] PASS
 * As with `:GoBuild` we can add a mapping to easily call `:GoTest` with a key
 combination. Add the following to your `.vimrc`:
 
-```
+```vim
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
 ```
 
@@ -276,7 +276,7 @@ Now you can easily test your files via `<leader>t`
 * Let's make building Go files simpler. First, remove the following mapping we added
   previously:
 
-```
+```vim
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 ```
 
@@ -306,7 +306,7 @@ compile your test files seamlessly.
 `,` as I find it more useful with the following setting(put this in the
 beginning of .vimrc):
 
-```
+```vim
 let mapleader = ","
 ```
 
@@ -410,7 +410,7 @@ unwanted files everytime.
 
 Add the following to your `.vimrc`:
 
-```
+```vim
 autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
 ```
 
@@ -583,7 +583,7 @@ This is really powerful and this all is thanks to the knowledge we have from
 let g:go_textobj_include_function_doc = 1 `motion`. If you don't like comments
 being a part of the function declaration, you can easily disable it with:
 
-```
+```vim
 let g:go_textobj_include_function_doc = 1
 ```
 
@@ -599,7 +599,7 @@ actually not a Go plugin, but it works for structs. To enable it add plugin
 directove between the `plug` definition into your `vimrc` and run
 `:PlugInstall`. Example:
 
-```
+```vim
 call plug#begin()
 Plug 'fatih/vim-go'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -639,7 +639,7 @@ snippets (errn, errn)
 
 * Don't forget to change `gofmt` to `goimports`
 
-```
+```vim
 let g:go_fmt_command = "goimports"
 ```
 
@@ -647,7 +647,7 @@ let g:go_fmt_command = "goimports"
   there is any parse errors it'll show them inside a quickfix list. This is
   enabled by default. Some people don't like it. To disable it add:
 
-```
+```vim
 let g:go_fmt_fail_silently = 1
 ```
 
@@ -704,7 +704,7 @@ spaces. It will use `4` spaces to represent a single indent.
 `molokai`. To enable it add the a Plug directive just between the plug
 definitions:
 
-```
+```vim
 call plug#begin()
 Plug 'fatih/vim-go'
 Plug 'fatih/molokai'
@@ -714,7 +714,7 @@ call plug#end()
 Also add the following to enable molokai with original color scheme and 256
 color version:
 
-```
+```vim
 let g:rehash256 = 1
 let g:molokai_original = 1
 colorscheme molokai
