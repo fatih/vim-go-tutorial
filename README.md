@@ -14,7 +14,7 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
 8. [Edit it](#edit-it)
   * [Imports](#imports)
   * [Text Objects](#text-objects)
-  * [Struct split/join](#struct-splitjoin)
+  * [Struct split&join](#struct-split-and-join)
   * [Snippets](#snippets)
 9. [Beautify it](#beautify-it)
 10. [Check it](#check-it)
