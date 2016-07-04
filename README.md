@@ -595,8 +595,8 @@ a part of the function declaration or not?)
 
 ### Struct split and join
 There is a great plugin that allows you to split or join Go structs. It's
-actually not a Go plugin, but it works for structs. To enable it add plugin
-directove between the `plug` definition into your `vimrc` and run
+actually not a Go plugin, but it has support for Go structs. To enable it add
+plugin directove between the `plug` definition into your `vimrc` and run
 `:PlugInstall`. Example:
 
 ```vim
@@ -632,7 +632,105 @@ the fields, you'll see that only two files are joined.
 
 ### Snippets
 
-snippets (errn, errn)
+Vim-go supports two popular snippet plugins.
+[Ultisnips](https://github.com/SirVer/ultisnips) and
+[neosnippet](https://github.com/Shougo/neosnippet.vim). By default out of the
+box, if you have `Ultisnips` installed it'll work.  Let us install `ultisnips`
+first. Add it between the `plug` directives in your `vimrc` and then run
+`:PlugInstall`. Example:
+
+```vim
+call plug#begin()
+Plug 'fatih/vim-go'
+Plug 'SirVer/ultisnips'
+call plug#end()
+```
+
+There are many helpful snippets. To see the full list check our current
+snippets:
+https://github.com/fatih/vim-go/blob/master/gosnippets/UltiSnips/go.snippets
+
+Let me show some of the snippets that I'm using the most. Change your `main.go`
+content to:
+
+```go
+package main
+
+import "encoding/json"
+
+type foo struct {
+	Name  string
+	Ports []int
+}
+
+func newFoo() (*foo, error) {
+	return &foo{
+		Name:  "foo",
+		Ports: []int{80},
+	}, nil
+}
+
+func main() {
+	res, err := newFoo()
+
+	out, err := json.Marshal(res)
+}
+```
+
+Let's put our cursor just after the `newFoo()` expression. Let's panic here if
+the err is non nil. Type `errp` in insert mode and just hit `tab`. You'll see
+that it'll be expanded and put your cursor inside the `panic()`` function:
+
+```
+if err != nil {
+    panic( )
+          ^
+          cursor position
+}
+```
+
+Fill the panic with `err` and move on to the `json.Marshal` statement. Do the
+same for it.
+
+Now let us print the variable `out`. Because variable printing is so popular,
+we have several snippets for it:
+
+```
+fn -> fmt.Println()
+ff -> fmt.Printf()
+ln -> log.Println()
+lf -> log.Printf()
+```
+
+Here `ff` and `lf` are special. They dynamically copy the variable name into
+the format string as well. Try it youself. Move your cursor to the end of the
+main function and type `ff` and hit tab. After expanding the snippet you can
+start typing. Type `string(out)` and you'll see that both the format string and
+the variadic arguments will be filled with the same string you have typed.
+
+This comes very handy to print quickly variables, especially for debugging.
+Run your file with `:GoRun` and you should see the following output:
+
+```
+string(out) = {"Name":"foo","Ports":[80]}
+```
+
+
+Great. Now let me show one last snippet that I think is very useful. As you see
+from the output the fields `Name` and `Ports` are starting with an uppercase
+character. To fix it we can add a json tag to the struct field. vim-go makes it
+very easy to add field tags. Move your cursor to the end of the `Name string` line in the field:
+
+```
+type foo struct {
+    Name string .
+                ^ put your cursor here 
+}
+```
+
+In `insert` mode, type `json` and hit enter. You'll see that it'll be
+automatically expanded to valid field tag that is in the format that the `json`
+package understands. 
 
 
 ### vimrc improvements
