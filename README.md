@@ -103,7 +103,7 @@ things different:
 
 Let's introduce two errors by adding two compile errors:
 
-```
+```go
 var b = foo()
 
 func main() {
@@ -163,7 +163,7 @@ autocmd FileType go nmap <leader>r  <Plug>(go-run)
 Let's write a simple function and a test that tests the function. Add the following:
 
 
-```
+```go
 func Bar() string {
 	return "bar"
 }
@@ -187,7 +187,7 @@ name was `main`)
 
 Complement the test file with to the following code to:
 
-```
+```go
 package main
 
 import (
@@ -223,7 +223,7 @@ We have two more commands that makes it easy to deal with test files. The other
 one is `:GoTestFunc`. This only tests the function immediate to your cursor.
 Let us change the content of the test file (`main_test.go`) to:
 
-```
+```go
 package main
 
 import (
@@ -285,7 +285,7 @@ any Go file we can create a simple Vim function that checks the type of the Go
 file, and execute `:GoBuild` or `:GoTestCompile`.  Below is the helper function
 you can add to your `.vimrc` which does it:
 
-```
+```vim
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
@@ -322,7 +322,7 @@ way.
 
 Let's first change back our `main_test.go` file to:
 
-```
+```go
 package main
 
 import (
@@ -340,7 +340,7 @@ func TestBar(t *testing.T) {
 And `main.go` to
 
 
-```
+```go
 package main
 
 func Bar() string {
@@ -374,7 +374,7 @@ To clear the syntax highlighting you can call `:GoCoverageClear`. Let us add a
 test case and see how the coverage changes. Add the following to `main_test.go`
 to:
 
-```
+```go
 func TestQuz(t *testing.T) {
 	result := Qux("bar")
 	if result != "bar" {
@@ -423,7 +423,7 @@ With this you can easily call `:GoCoverageToggle` with `<leader>c`
 
 Let us start with a sample `main.go` file:
 
-```
+```go
 package main
 
      import "fmt"
@@ -442,7 +442,7 @@ the hood.
 Let's print the `"gophercon"` string all uppercase. For it we're going to use
 the `strings` package. Change the definition to:
 
-```
+```go
 fmt.Println(strings.ToLower("Gopher"))
 ```
 
@@ -493,7 +493,7 @@ use to change functions. Those are `if` and `af`. `if` means inner function and
 it allows you to select the content of a function enclosure. Change your `main.go` file to:
 
 
-```
+```go
 package main
 
 import "fmt"
@@ -521,7 +521,7 @@ starting from the `func` keyword until the right brace `}`. It uses the tool
 explicitly for vim-go to support features like this. It's Go AST aware and thus
 it's capabilities are really good. Like what you might ask? Change `main.go` to:
 
-```
+```go
 package main
 
 import "fmt"
@@ -549,7 +549,7 @@ We also have `af`, which means `a function`. This text object includes the
 whole function declaration. Change your `main.go` to:
 
 
-```
+```go
 package main
 
 import "fmt"
@@ -608,7 +608,7 @@ call plug#end()
 
 Once you have installed the plugin, change the `main.go` file too:
 
-```
+```go
 package main
 
 type Foo struct {
