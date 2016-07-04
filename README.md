@@ -464,6 +464,117 @@ might be slow on very large code bases. In this case we also have the
 `:GoImports` command (note the `s` at the end). With this, you can explicitly
 call `goimports`
 
+Let us show more editing tips/tricks. There are two text objects that we can
+use to change functions. Those are `if` and `af`. `if` means inner function and
+it allows you to select the content of a function enclosure. Change your `main.go` file to:
+
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println(1)
+	fmt.Println(2)
+	fmt.Println(3)
+	fmt.Println(4)
+	fmt.Println(5)
+}
+```
+
+Put your cursor on the `func` keyword  Now execute the following in `normal`
+mode and see what happens:
+
+```
+dif
+```
+
+You'll see that the function body is removed. Because we used the `d` operator.
+Undo your changes with `u`. The great thing is that your cursor can be anywhere
+starting from the `func` keyword until the right brace `}`. It uses the tool
+[motion](https://github.com/fatih/motion) under the thood. A tool that I wrote
+explicitly for vim-go to support features like this. It's Go AST aware and thus
+it's capabilities are really good. Like what you might ask? Change `main.go` to:
+
+```
+package main
+
+import "fmt"
+
+func Bar() string {
+	fmt.Println("calling bar")
+
+	foo := func() string {
+		return "foo"
+	}
+
+	return foo()
+}
+```
+
+Previously we were using regexp based text objects. And it lead to problems.
+For example in this example, put your cursor to the anonymous functions' `func`
+keyword and execute `dif` in `normal` mode. You'll see that only the body of
+the anonymous function is deleted.
+
+We only used so far the `d` operator (delete). However it's up to you. For
+example you can select it via `vif` or yank(copy) with `yif`.
+
+We also have `af`, which means `a function`. This text object includes the
+whole function declaration. Change your `main.go` to:
+
+
+```
+package main
+
+import "fmt"
+
+// bar returns a the string "foo" even though it's named as "bar". It's an
+// example to be used with vim-go's tutorial to show the 'if' and 'af' text
+// objects.
+func bar() string {
+	fmt.Println("calling bar")
+
+	foo := func() string {
+		return "foo"
+	}
+
+	return foo()
+}
+```
+
+
+So here is the great thing. Because of `motion` we have full knowledge about
+every single syntax node. Put your cursor on top of the `func`  keyword or
+anywhere below or above (doesn't matter). If you now execute `vaf`, you'll see
+that the function declaration is being selected, along with the doc comment as
+well! You can for example delete the whole function with `daf`, and you'll see
+that the comment is gone as well. Go ahead and put your cursor on top of the
+comment and execute `vif` and then `vaf`. You'll see that it selects the
+function body, even though your cursor is outside the function, or it selects
+the function comments as well.
+
+This is really powerful and this all is thanks to the knowledge we have from
+let g:go_textobj_include_function_doc = 1 `motion`. If you don't like comments
+being a part of the function declaration, you can easily disable it with:
+
+```
+let g:go_textobj_include_function_doc = 1
+```
+
+If you are interested more about `motion`, checkout the blog post I wrote with
+more details: [Treating Go types as objects in Vim](https://medium.com/@farslan/treating-go-types-as-objects-in-vim-ed6b3fad9287#.45q2rtqgf)
+
+(Optional question: without looking at the `go/ast` package, is the doc comment
+a part of the function declaration or not?)
+
+
+TODO: 
+
+snippets (errn, errn)
+gJ,gS https://github.com/AndrewRadev/splitjoin.vim
+
 
 ## .vimrc improvements:
 
@@ -553,6 +664,32 @@ colorscheme molokai
 After that restart your Vim and call `:PlugInstall`. This will pull the plugin
 and install it for you. After the plugin is installed, you need to restart Vim
 again.
+
+# Check it
+
+* :GoLint
+* :GoVet
+* :GoErrCheck
+* :GoMetaLinter
+
+# Navigate it
+
+* :GoDoc
+* :GoDocBrowser
+* :GoAlternate
+* :GoDef
+* :GoDefPop
+* :GoDefStack
+* :GoDefStackClear
+* :GoInfo
+
+* :GoDecls
+* :GoDeclsDir
+ctrlp.vim
+]]
+[[
+
+# Understand it
 
 
 ## Commands
