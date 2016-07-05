@@ -659,14 +659,16 @@ package main
 import "encoding/json"
 
 type foo struct {
-	Name  string
-	Ports []int
+	Message    string
+	Ports      []int
+	ServerName string
 }
 
 func newFoo() (*foo, error) {
 	return &foo{
-		Name:  "foo",
+		Message:  "foo",
 		Ports: []int{80},
+		ServerName: "Foo",
 	}, nil
 }
 
@@ -712,26 +714,52 @@ This comes very handy to print quickly variables, especially for debugging.
 Run your file with `:GoRun` and you should see the following output:
 
 ```
-string(out) = {"Name":"foo","Ports":[80]}
+string(out) = {"Message":"foo loves bar","Ports":[80],"ServerName":"Foo"}
 ```
 
-
 Great. Now let me show one last snippet that I think is very useful. As you see
-from the output the fields `Name` and `Ports` are starting with an uppercase
+from the output the fields `Message` and `Ports` are starting with an uppercase
 character. To fix it we can add a json tag to the struct field. vim-go makes it
-very easy to add field tags. Move your cursor to the end of the `Name string` line in the field:
+very easy to add field tags. Move your cursor to the end of the `Message`
+string line in the field:
 
 ```
 type foo struct {
-    Name string .
-                ^ put your cursor here 
+    Message string .
+                   ^ put your cursor here 
 }
 ```
 
 In `insert` mode, type `json` and hit enter. You'll see that it'll be
-automatically expanded to valid field tag that is in the format that the `json`
-package understands. 
+automatically expanded to valid field tag. And the field name is converted
+automatically to a lowercase and put there for you. You should now see the
+following:
 
+```
+type foo struct {
+	Message  string `json:"message"`
+}
+```
+
+It's really amazing. But we can be even more better! Go ahead and create a
+snippet expansion for the `ServerName` field. You'll see that it's converted to
+`server_name`. Quite amazing right! 
+
+```go
+type foo struct {
+	Message    string `json:"message"`
+	Ports      []int
+	ServerName string `json:"server_name"`
+}
+```
+
+You even change which case it should apply while converting. By default vim-go
+uses `snake_case`. But you can also use `camelCase` if you wish. For example if
+you wish to change the default value to camel case use the following setting:
+
+```vim 
+let g:go_snippet_case_type = "camelcase"
+```
 
 ### vimrc improvements
 
