@@ -753,14 +753,6 @@ type foo struct {
 }
 ```
 
-You even change which case it should apply while converting. By default vim-go
-uses `snake_case`. But you can also use `camelCase` if you wish. For example if
-you wish to change the default value to camel case use the following setting:
-
-```vim 
-let g:go_snippet_case_type = "camelcase"
-```
-
 ### vimrc improvements
 
 * Don't forget to change `gofmt` to `goimports`
@@ -775,6 +767,15 @@ let g:go_fmt_command = "goimports"
 
 ```vim
 let g:go_fmt_fail_silently = 1
+```
+
+* You can change which case it should apply while converting. By default vim-go
+  uses `snake_case`. But you can also use `camelCase` if you wish. For example
+  if you wish to change the default value to camel case use the following
+  setting:
+
+```vim 
+let g:go_snippet_case_type = "camelcase"
 ```
 
 # Beautify it
