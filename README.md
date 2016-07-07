@@ -786,32 +786,118 @@ color as it causes to much distraction. The second reason is that it impacts
 the performance of Vim a lot. We need to enable them explicitly. First add the
 following settings to your `.vimrc`:
 
-
 ```
 let g:go_highlight_types = 1
+```
+
+this higlights the `bar` and `foo` below:
+
+```
+type foo struct{
+  quz string
+}
+
+type bar interface{}
+```
+
+Adding the following:
+
+```
 let g:go_highlight_fields = 1
+```
+
+will highlight the `quz` below:
+
+```go
+type foo struct{
+  quz string
+}
+
+
+f := foo{quz:"QUZ"}
+f.quz # quz here will be highlighted
+```
+
+If we add the following:
+
+```
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 ```
 
+we now also highlighting function names. Belo `Foo` and `main` will ben now
+highlighted:
 
-The following setting will highlight operators, such as :
+```go
+func (t *T) Foo() {}
 
-```
-let g:go_highlight_operators = 1
-```
-
-```
-let g:go_highlight_extra_types = 1
+func main() {
+}
 ```
 
+If you add `let g:go_highlight_operators = 1` it will highlight the following
+operators such as:
 
 ```
-let g:go_highlight_format_strings = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_string_spellcheck = 1
-let g:go_highlight_generate_tags = 0
+- + % < > ! & | ^ * =
+-= += %= <= >= != &= |= ^= *= ==
+<< >> &^
+<<= >>= &^=
+:= && || <- ++ --
 ```
+
+And if you add `let g:go_highlight_extra_types = 1` the following extra types
+will be highlighted as well:
+
+```
+bytes.(Buffer)
+io.(Reader|ReadSeeker|ReadWriter|ReadCloser|ReadWriteCloser|Writer|WriteCloser|Seeker)
+reflect.(Kind|Type|Value)
+unsafe.Pointer
+```
+
+Let's move on to more useful highglights. What about build tags? It's not easy
+to implement it without looking into the `go/build` document. Let us add first
+the following: `let g:go_highlight_build_constraints = 1` and change your
+`main.go` file to:
+
+```
+// build linux
+package main
+```
+
+You'll see that it's gray, thus it's not valid. Prepend `+` to the `build` word and save it again:
+
+```
+// +build linux
+package main
+```
+
+Do you know why? If you read the `go/build` package you'll see that the
+following is burried in the document:
+
+> ... preceded only by blank lines and other line comments.
+
+Let us change our content again and save it to:
+
+
+```
+// +build linux
+
+package main
+```
+
+You'll see that it automatically highlighted it in a valid way. It's really
+great. If you go and change `linux` to something you'll see that it also checks
+for valid official tags (such as `darwin`,`race`, `ignore`, etc... )
+
+
+Another similar feature is to highlight the Go directive `//go:generate`. If
+you put `let g:go_highlight_generate_tags = 1` into your vimrc, it'll highlight
+a valid directive that is processed with the `go generate` command.
+
+We have a lot more highlight settings, these are just a sneak peek of it. For
+more check out the settings via `:help go-settings`
 
 
 ### vimrc improvements
