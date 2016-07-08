@@ -786,7 +786,7 @@ color as it causes to much distraction. The second reason is that it impacts
 the performance of Vim a lot. We need to enable them explicitly. First add the
 following settings to your `.vimrc`:
 
-```
+```vim
 let g:go_highlight_types = 1
 ```
 
@@ -802,7 +802,7 @@ type bar interface{}
 
 Adding the following:
 
-```
+```vim
 let g:go_highlight_fields = 1
 ```
 
@@ -820,7 +820,7 @@ f.quz # quz here will be highlighted
 
 If we add the following:
 
-```
+```vim
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 ```
@@ -939,10 +939,63 @@ again.
 
 # Check it
 
-* :GoLint
-* :GoVet
-* :GoErrCheck
-* :GoMetaLinter
+From the previous examples you saw that we had many commands that would show
+the quickfix window when there was an issue. For example `:GoBuild` shows
+errors from the compile output (if any). Or for example `:GoFmt` shows the
+parse errors of the current file while formatting it.
+
+We have many other commands that allows us to call and then collect errors,
+warnings or suggestions.
+
+For example `:GoLint`. Under the hood it calls `golint`, which is a command
+that suggest recommendation on how a idiomatic Go source code should be. There
+is also `:GoVet`, which calls `go vet` under the hood. There are many other
+tools that checks certain things. To make it more easier someone decided to
+create a tool that goes and calls all these checkers. This tool is called
+`gometalinter`. And vim-go supports it via the command `:GoMetaLinter`. So what
+does it do?
+
+If you just call `:GoMetaLinter` for a given Go source code. It'll run by
+default concurrently `go vet`, `golint` and `errcheck`. `gometalinter` collects
+all the outputs and normalizes it to a common format. Thus if you call
+`:GoMetaLinter`, vim-go shows the result of all these checkers inside a
+quickfix list. You can then jump easily between the lint, vet and errcheck results. The setting for this default is as following:
+
+```vim
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+```
+
+There are many other tools and you can easily customize this list your self. If
+you call `:GoMetaLinter` it'll automatically uses the list above.
+
+
+Because `:GoMetaLinter` is usually fast, vim-go also can call it whenever you
+save a file (just like `:GoFmt`). To enable it you need to add the following to
+your `.vimrc:`
+
+```vim
+let go_metalinter_autosave = 1
+```
+
+What great is that the checkers for the autosave is different than what you
+would use for `:GoMetaLinter`.  This is great as you can customize it so only
+fast chckers are called when you save your file, but others if you call
+`:GoMetaLinter`. The following setting let you customize the checkers for the
+`autosave` feature.
+
+
+```vim
+let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+```
+
+As you see by default `vet` and `golint` is enabled. Lastly to avoid
+`:GoMetaLinter` to run for a ling time, we have a setting to cancel it after a
+given timeout. By default it is `5 seconds` but can be changed by the following
+setting:
+
+```vim
+let g:go_metalinter_deadline = "5s"
+```
 
 # Navigate it
 
@@ -962,6 +1015,16 @@ ctrlp.vim
 [[
 
 # Understand it
+
+* :GoCallees
+* :GoCallers
+* :GoDescribe
+* :GoCallstack
+* :GoFreevars
+* :GoChannelPeers
+* :GoReferrers
+* :GoGuruScope
+* :GoGuruTags
 
 
 ## Commands
