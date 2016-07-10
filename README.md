@@ -18,7 +18,10 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
   * [Snippets](#snippets)
 9. [Beautify it](#beautify-it)
 10. [Check it](#check-it)
-11. [Navigate it](#Navigate-it)
+11. [Navigate it](#navigate-it)
+  * [Alternate files](#alternate-files)
+  * [Go to definition](#go-to-definition)
+  * [Move between functions](#move-between-functions)
 12. [Understand it](#Understand-it)
 
 # Quick Setup
