@@ -52,7 +52,7 @@ gocode, etc...). If you already have them in your PATH, you're good to go.
 vim -c "GoInstallBinaries" -c "qa" 
 ```
 
-or open vim and execute `:GoInstallBinaries`
+Or open vim and execute `:GoInstallBinaries`
 
 For the tutorial, all our examples will be under
 `GOPATH/src/github.com/fatih/vim-go-tutorial/`. Please be sure your inside this
@@ -115,7 +115,7 @@ func main() {
 }
 ```
 
-save the file and call `:GoBuild` again. 
+Save the file and call `:GoBuild` again. 
 
 This time the quickfix view will be opened. To jump between the errors you can
 use `:cnext` and `:cprevious`. Let us remove those the first error, save the
@@ -144,7 +144,7 @@ whenever there is an error the quickfix window always will pop up.
 
 ### vimrc improvements
 
-You can add some shorcuts to make it easier to jump between errors in quickfix
+You can add some shortcuts to make it easier to jump between errors in quickfix
 list:
 
 ```vim
@@ -153,7 +153,7 @@ map <C-m> :cp<CR>
 nnoremap <leader>a :cclose<CR>
 ```
 
-I also use these shorcuts to build and run a Go program with `<leader>b` and
+I also use these shortcuts to build and run a Go program with `<leader>b` and
 `<leader>r`:
 
 ```vim
@@ -174,7 +174,7 @@ func Bar() string {
 
 open a new file called `main_test.go` (it doesn't matter how you open it, from
 inside vim, a separate Vim session, etc.. it's up to you). Let us use the
-curent buffer and open it from vim via `:edit main_test.go`.
+current buffer and open it from vim via `:edit main_test.go`.
 
 When you open the new file you notice something. The file automatically has the
 package declaration added:
@@ -249,7 +249,7 @@ func TestQuz(t *testing.T) {
 }
 ```
 
-Now when we call `:GoTest` a quickfix window wil be open with two errors.
+Now when we call `:GoTest` a quickfix window will be open with two errors.
 However if go inside the `TestBar` function and call `:GoTestFunc`, you'll see
 that our test passes!  This is really useful if you have a lot of tests that
 takes time and you only want to test certain tests.
@@ -407,7 +407,7 @@ page and then opens it in your default browser. Some people like this more.
 
 Using the `:GoCoverageXXX` commands do not create any kind of temporary files.
 It doesn't pollute your workflow. So you don't have to deal with removing
-unwanted files everytime.
+unwanted files every time.
 
 ### vimrc improvements
 
@@ -455,19 +455,19 @@ When you build it you'll get an error of course:
 main.go|8| undefined: strings in strings.ToLower
 ```
 
-You'l see we get an error because the `strings` package is not imported. Vim-go
+You'll see we get an error because the `strings` package is not imported. Vim-go
 has couple of commands to make it easy to manipulate the import declarations.
 
 We can easily go and edit the file, but instead we're going to use the vim
 command `:GoImport`. This command adds the given package to the import path.
 Run it via: `:GoImport strings`. You'll see the `strings` package is being
-added.  The greatin thing about this command is that it also supports
+added.  The great thing about this command is that it also supports
 completion. So you can just type `:GoImport s` and hit tab.
 
 We also have `:GoImportAs` and `:GoDrop` to edit the import paths.
-`:GoImportAs` is the same as `:GoImport`, but it allowd to change the
-packagename. For example `:GoImportAs str strings`, will import `strings` with
-the package name `str.`
+`:GoImportAs` is the same as `:GoImport`, but it allowed to change the package
+name. For example `:GoImportAs str strings`, will import `strings` with the
+package name `str.`
 
 Finally `:GoDrop` makes it easy to remove any import paths from the import
 declarations. `:GoDrop strings` will remove it from the import declarations.
@@ -520,7 +520,7 @@ dif
 You'll see that the function body is removed. Because we used the `d` operator.
 Undo your changes with `u`. The great thing is that your cursor can be anywhere
 starting from the `func` keyword until the right brace `}`. It uses the tool
-[motion](https://github.com/fatih/motion) under the thood. A tool that I wrote
+[motion](https://github.com/fatih/motion) under the hood. A tool that I wrote
 explicitly for vim-go to support features like this. It's Go AST aware and thus
 it's capabilities are really good. Like what you might ask? Change `main.go` to:
 
@@ -599,7 +599,7 @@ a part of the function declaration or not?)
 ### Struct split and join
 There is a great plugin that allows you to split or join Go structs. It's
 actually not a Go plugin, but it has support for Go structs. To enable it add
-plugin directove between the `plug` definition into your `vimrc` and run
+plugin directive between the `plug` definition into your `vimrc` and run
 `:PlugInstall`. Example:
 
 ```vim
@@ -793,7 +793,7 @@ following settings to your `.vimrc`:
 let g:go_highlight_types = 1
 ```
 
-this higlights the `bar` and `foo` below:
+This highlights the `bar` and `foo` below:
 
 ```
 type foo struct{
@@ -809,7 +809,7 @@ Adding the following:
 let g:go_highlight_fields = 1
 ```
 
-will highlight the `quz` below:
+Will highlight the `quz` below:
 
 ```go
 type foo struct{
@@ -828,7 +828,7 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 ```
 
-we now also highlighting function names. Belo `Foo` and `main` will ben now
+We now also highlighting function names. Below `Foo` and `main` will be now
 highlighted:
 
 ```go
@@ -859,7 +859,7 @@ reflect.(Kind|Type|Value)
 unsafe.Pointer
 ```
 
-Let's move on to more useful highglights. What about build tags? It's not easy
+Let's move on to more useful highlights. What about build tags? It's not easy
 to implement it without looking into the `go/build` document. Let us add first
 the following: `let g:go_highlight_build_constraints = 1` and change your
 `main.go` file to:
@@ -877,7 +877,7 @@ package main
 ```
 
 Do you know why? If you read the `go/build` package you'll see that the
-following is burried in the document:
+following is buried in the document:
 
 > ... preceded only by blank lines and other line comments.
 
@@ -917,7 +917,7 @@ This setting will not expand a tab into spaces. It'll show a single tab as `4`
 spaces. It will use `4` spaces to represent a single indent.
 
 * A lot of people ask for my colorscheme. I'm using a slightly modified
-`molokai`. To enable it add the a Plug directive just between the plug
+`molokai`. To enable it add the Plug directive just between the plug
 definitions:
 
 ```vim
@@ -983,7 +983,7 @@ let go_metalinter_autosave = 1
 
 What great is that the checkers for the autosave is different than what you
 would use for `:GoMetaLinter`.  This is great as you can customize it so only
-fast chckers are called when you save your file, but others if you call
+fast checkers are called when you save your file, but others if you call
 `:GoMetaLinter`. The following setting let you customize the checkers for the
 `autosave` feature.
 
@@ -1023,9 +1023,9 @@ also open it. Once you open it just execute the following vim command:
 ```
 
 You'll see that you switched immediately to `main_test.go`. If you execute it
-again, it'll switch to `main.go`. `:GoAlternate` works as a toogle and is
+again, it'll switch to `main.go`. `:GoAlternate` works as a toggle and is
 really useful if you have a package with many test files.  The idea is very
-similiar to the plugin [a.vim](https://github.com/vim-scripts/a.vim) command
+similar to the plugin [a.vim](https://github.com/vim-scripts/a.vim) command
 names. This plugin jumps between a `.c` and `.h` file. In our case
 `:GoAlternate` is used to switch between a test and non test file.
 
@@ -1054,7 +1054,7 @@ func main() {
 }
 ```
 
-Now we have here several ways of jumpint to declarations. For example if put
+Now we have here several ways of jumping to declarations. For example if put
 your cursor on top of `T` expression just after the main function and call
 `:GoDef` it'll jump to the type declaration.
 
@@ -1072,7 +1072,7 @@ and `ctrl-]` as well. So instead of `:GoDef` you can easily use `gd` or
 `ctrl-]`
 
 Once we jump to a declaration, we also might want to get back into our previous
-location. By default there is the Vim shorcut  `ctrl-o` that jumps to the
+location. By default there is the Vim shortcut  `ctrl-o` that jumps to the
 previous cursor location. It works great when it does, but not good enough if
 you're navigating between Go declaration. If you for example jump to a file
 with `:GoDef` and then scroll down to the bottom, and then maybe to the top,
@@ -1088,7 +1088,7 @@ locations, and it works even if you scroll down/up in a file. And because this
 is also used so many times we have the shortcut `ctrl-t` which calls under the
 hood `:GoDefPop`. So to recap:
 
-* Use `ctrl-]` or `gd` to jump to a definition, localy or globally
+* Use `ctrl-]` or `gd` to jump to a definition, locally or globally
 * Use `ctrl-t` to jump back to the previous location 
 
 Let us move on with another question, suppose you jump so far that you just
@@ -1108,8 +1108,8 @@ remember partially the name of a function?
 
 In our `Edit it` section I've mentioned a tool called `motion`, which is a
 custom built tool just for vim-go. `motion` has other capabilities as well.
-`motion` parses your Go package and thus has a great undersanding of all
-declarations. We can take advantage of this feature for jumpting between
+`motion` parses your Go package and thus has a great understanding of all
+declarations. We can take advantage of this feature for jumping between
 declarations. There are two commands, which are not available until you install
 a certain plugin. The commands are:
 
@@ -1200,7 +1200,7 @@ Sometimes just searching for the current file is not enough. A Go package can
 have multiple files (such as tests). A type declaration can be in one file,
 whereas a some functions specific to a certain set of features can be in
 another file. This is where `:GoDeclsDir` is useful. It parses the whole
-directoy for the given file and lists all the declarations for the given
+director for the given file and lists all the declarations for the given
 directory.
 
 Call `:GoDeclsDir`. You'll see this time it also included the declarations from
@@ -1209,14 +1209,14 @@ and `TestBar` functions. This is really great if you just want to get an
 overview of all type and function declarations, and also jump to them.
 
 Let's continue with a question. What if you just want to move to the next or
-previous function? If you current funtion body is long, you'll probably will
+previous function? If you current function body is long, you'll probably will
 not see the function names. Or maybe there are other declarations between the
 current and other functions.
 
 Vim already has motion operators like `w` for words or `b` for backwards words.
 But what if we could motions for Go ast? For example for function declarations?
 
-vim-go provides(ovverides) two motion objects to move between functions. These
+vim-go provides(overrides) two motion objects to move between functions. These
 are:
 
 
@@ -1230,12 +1230,12 @@ jumps between braces. We can do it better. Just like our previous example,
 `motion` is used under the hood for his operation
 
 Open `main.go` and move to the top of the file. In `normal` mode, type `]]` and
-see what happens. You'll se that you jumped to the `main()` function. Another
+see what happens. You'll see that you jumped to the `main()` function. Another
 `]]` will jump to `Bar()` If you hit `[[` it'll jump back to the `main()`
 function.
 
 `]]` and `[[` also accepts `counts`. For example if you move to the top again
-and hit `3]]` you'll see that it'll jump the third functon in the source file.
+and hit `3]]` you'll see that it'll jump the third function in the source file.
 And going forward, because these are valid motions, you can apply operators to
 it as well!
 
