@@ -959,7 +959,8 @@ If you just call `:GoMetaLinter` for a given Go source code. It'll run by
 default concurrently `go vet`, `golint` and `errcheck`. `gometalinter` collects
 all the outputs and normalizes it to a common format. Thus if you call
 `:GoMetaLinter`, vim-go shows the result of all these checkers inside a
-quickfix list. You can then jump easily between the lint, vet and errcheck results. The setting for this default is as following:
+quickfix list. You can then jump easily between the lint, vet and errcheck
+results. The setting for this default is as following:
 
 ```vim
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
@@ -999,14 +1000,142 @@ let g:go_metalinter_deadline = "5s"
 
 # Navigate it
 
-* :GoDoc
-* :GoDocBrowser
+So far we only jumped between two files, `main.go` and `main_test.go`. It's
+really easy to switch if you have just two files in the same directory. But
+what if the project gets larger and larger with time? Or what if the file
+itself is so large that you have hard time navigating it?
+
+
+### Alternate files
+
+vim-go has several ways of improving navigating a source code. First let me
+show how we can quickly jump between a Go source code and it's test file.
+
+Suppose you have both a `foo.go` and it's equivalent test file `foo_test.go`.
+If you have `main.go` from the previous examples with it's test file you can
+also open it. Once you open it just execute the following vim command:
+
+```vim
+:GoAlternate
+```
+
+You'll see that you switched immediately to `main_test.go`. If you execute it
+again, it'll switch to `main.go`. `:GoAlternate` works as a toogle and is
+really useful if you have a package with many test files.  The idea is very
+similiar to the plugin [a.vim](https://github.com/vim-scripts/a.vim) command
+names. This plugin jumps between a `.c` and `.h` file. In our case
+`:GoAlternate` is used to switch between a test and non test file.
+
+### Go to definition
+
+One of the most used feature is `go to definition`. vim-go had from the
+beginning the command `:GoDef` that jumps to any identifiers declaration. Let
+us first create a `main.go` file to show it in action. Create it with the
+following content:
+
+```go
+package main
+
+import "fmt"
+
+type T struct {
+	Foo string
+}
+
+func main() {
+	t := T{
+		Foo: "foo",
+	}
+
+	fmt.Printf("t = %+v\n", t)
+}
+```
+
+Now we have here several ways of jumpint to declarations. For example if put
+your cursor on top of `T` expression just after the main function and call
+`:GoDef` it'll jump to the type declaration.
+
+If you put your cursor on top of the `t` variable declaration just after the
+main function and call `:GoDef`, you'll see that nothing will happen. Because
+there is no place to go, but if you scroll down a few lines and put your cursor
+to the `t` variable used in `fmt.Printf()` and call `:GoDef`, you'll see that
+it jumped to the variable declaration.
+
+`:GoDef` not only works for local scope, it works also globally
+(across`GOPATH`).  If you for example put your cursor on top of the `Printf()`
+function and call `:GoDef`, it'll jump directly to the `fmt` package.  Because
+this is used so many times, vim-go overrides the built in Vim shortcuts `gd`
+and `ctrl-]` as well. So instead of `:GoDef` you can easily use `gd` or
+`ctrl-]`
+
+Once we jump to a declaration, we also might want to get back into our previous
+location. By default there is the Vim shorcut  `ctrl-o` that jumps to the
+previous cursor location. It works great when it does, but not good enough if
+you're navigating between Go declaration. If you for example jump to a file
+with `:GoDef` and then scroll down to the bottom, and then maybe to the top,
+`ctrl-o` will remember these locations as well. So if you want to jump back to
+the location just prior invoking `:GoDef`, you have to hit `ctrl-o` multiple
+times. And this is really annoying.
+
+We don't need to use this shortcut though as vim-go has a better implementation
+already for you. There is a command `:GoDefPop` which does this exactly. vim-go
+keeps an internal stack list for all the locations you visit with `:GoDef`.
+This means you can jump back easily again via `:GoDefPop` to your older
+locations, and it works even if you scroll down/up in a file. And because this
+is also used so many times we have the shortcut `ctrl-t` which calls under the
+hood `:GoDefPop`. So to recap:
+
+* Use `ctrl-]` or `gd` to jump to a definition, localy or globally
+* Use `ctrl-t` to jump back to the previous location 
+
+Let us move on with another question, suppose you jump so far that you just
+want to back the first location you started your journey? As said earlier,
+vim-go keeps an history of all your locations invoked via `:GoDef`. There is a
+command that shows all these and it's called `:GoDefStack`. If you call it,
+you'll see that a custom window with a list of your old locations will be
+showed. Just navigate to your desired location and hit enter.  And finally to
+clear the stack list anytime call `:GoDefStackClear`.
+
+
+### .vimrc improvements
+
+* We can improve it to control how it opens the alternate file. Add the
+  followings to your `.vimrc`:
+
+
+```vim
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+```
+
+This will add new commands, called `:A`, `:AV`, `:AS` and `:AT`. Here `:A`
+works just like `:GoAlternate`, it replaces the current buffer with the
+alternate file. `:AV` will open a new vertical split with the alternate file.
+`:AS` will open the alternate file in a new split view and `:AT` in a new tab.
+These commands are very productive dependent on how you use them, so I think
+it's useful to have them.
+
+* The go to definition command families are very powerful buy yet easy to use.
+Under the hood it uses by default the tool `guru` (former `oracle`). `guru` has
+an excellent track of being very predictable. It works for dot imports,
+vendorized imports and many other non obvious identifiers. But it's sometimes
+very slow for certain queries. Previously vim-go was using `godef`. With the
+latest release one can easily use or switch the underlying tool for `:GoDef`.
+To change it back to `godef` use the following setting:
+
+```vim
+let g:go_def_mode = 'godef'
+```
+
+### Move between functions
+
 * :GoAlternate
 * :GoDef
 * :GoDefPop
 * :GoDefStack
 * :GoDefStackClear
-* :GoInfo
 
 * :GoDecls
 * :GoDeclsDir
@@ -1016,6 +1145,9 @@ ctrlp.vim
 
 # Understand it
 
+* :GoInfo
+* :GoDoc
+* :GoDocBrowser
 * :GoCallees
 * :GoCallers
 * :GoDescribe
