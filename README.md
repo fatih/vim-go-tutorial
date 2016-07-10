@@ -1097,6 +1097,151 @@ showed. Just navigate to your desired location and hit enter.  And finally to
 clear the stack list anytime call `:GoDefStackClear`.
 
 
+### Move between functions
+
+From the previous example that `:GoDef` is nice if you know where you want to
+jump. But what if you don't know what your next destination is? Or you just
+remember partially the name of a function? 
+
+In our `Edit it` section I've mentioned a tool called `motion`, which is a
+custom built tool just for vim-go. `motion` has other capabilities as well.
+`motion` parses your Go package and thus has a great undersanding of all
+declarations. We can take advantage of this feature for jumpting between
+declarations. There are two commands, which are not available until you install
+a certain plugin. The commands are:
+
+```
+:GoDecls
+:GoDeclsDir
+```
+
+First let us enable these two commands by installing the necessary plugin. The
+plugin is called [ctrlp](https://github.com/ctrlpvim/ctrlp.vim). Long time Vim
+users have it installed already. To install it add the following line between
+your `plug` directives and call `:PlugInstall` to install it:
+
+```vim
+Plug 'ctrlpvim/ctrlp.vim'
+```
+
+Once you have it installed, use the following `main.go` content:
+
+```go
+package main
+
+import "fmt"
+
+type T struct {
+	Foo string
+}
+
+func main() {
+	t := T{
+		Foo: "foo",
+	}
+
+	fmt.Printf("t = %+v\n", t)
+}
+
+func Bar() string {
+	return "bar"
+}
+
+func BarFoo() string {
+	return "bar_foo"
+}
+```
+
+And a `main_test.go` file with the following content:
+
+```go
+package main
+
+import (
+	"testing"
+)
+
+type files interface{}
+
+func TestBar(t *testing.T) {
+	result := Bar()
+	if result != "bar" {
+		t.Errorf("expecting bar, got %s", result)
+	}
+}
+
+func TestQuz(t *testing.T) {
+	result := Qux("bar")
+	if result != "bar" {
+		t.Errorf("expecting bar, got %s", result)
+	}
+
+	result = Qux("qux")
+	if result != "INVALID" {
+		t.Errorf("expecting INVALID, got %s", result)
+	}
+}
+```
+
+Open `main.go` and call `:GoDecls`. You'll see that `:GoDecls` shows all type
+and function declarations for you. If you type `ma` you'll see that `ctrlp`
+filters the list for you. If you hit `enter` it will automatically jump to it.
+The fuzzy search capabilities combined with `motion`'s AST capabilities brings
+us a very simple to use buy powerful feature.
+
+For example call `:GoDecls` and write `foo`. You'll see that it'll filter for
+you `BarFoo`. The Go parser is very fast and works very well with large files
+with hundreds of declarations.
+
+Sometimes just searching for the current file is not enough. A Go package can
+have multiple files (such as tests). A type declaration can be in one file,
+whereas a some functions specific to a certain set of features can be in
+another file. This is where `:GoDeclsDir` is useful. It parses the whole
+directoy for the given file and lists all the declarations for the given
+directory.
+
+Call `:GoDeclsDir`. You'll see this time it also included the declarations from
+the `main_test.go` file as well. If you type `Bar`, you'll see both the `Bar`
+and `TestBar` functions. This is really great if you just want to get an
+overview of all type and function declarations, and also jump to them.
+
+Let's continue with a question. What if you just want to move to the next or
+previous function? If you current funtion body is long, you'll probably will
+not see the function names. Or maybe there are other declarations between the
+current and other functions.
+
+Vim already has motion operators like `w` for words or `b` for backwards words.
+But what if we could motions for Go ast? For example for function declarations?
+
+vim-go provides(ovverides) two motion objects to move between functions. These
+are:
+
+
+```
+]] -> jump to next function
+[[ -> jump to previous function
+```
+
+Vim by default has these shortcuts. But those are fitted for C source code and
+jumps between braces. We can do it better. Just like our previous example,
+`motion` is used under the hood for his operation
+
+Open `main.go` and move to the top of the file. In `normal` mode, type `]]` and
+see what happens. You'll se that you jumped to the `main()` function. Another
+`]]` will jump to `Bar()` If you hit `[[` it'll jump back to the `main()`
+function.
+
+`]]` and `[[` also accepts `counts`. For example if you move to the top again
+and hit `3]]` you'll see that it'll jump the third functon in the source file.
+And going forward, because these are valid motions, you can apply operators to
+it as well!
+
+If you move your file to the top  and hit `d]]` you'll see that it deleted
+anything until the next function. For example one useful usage would be typing
+`v]]` and then hit `]]` again to select the next function, until you've done
+with your selection.
+
+
 ### .vimrc improvements
 
 * We can improve it to control how it opens the alternate file. Add the
@@ -1120,28 +1265,29 @@ it's useful to have them.
 * The go to definition command families are very powerful buy yet easy to use.
 Under the hood it uses by default the tool `guru` (former `oracle`). `guru` has
 an excellent track of being very predictable. It works for dot imports,
-vendorized imports and many other non obvious identifiers. But it's sometimes
-very slow for certain queries. Previously vim-go was using `godef`. With the
-latest release one can easily use or switch the underlying tool for `:GoDef`.
-To change it back to `godef` use the following setting:
+vendorized imports and many other non obvious identifiers. But sometimes it's
+very slow for certain queries. Previously vim-go was using `godef` which is
+very fast on resolving queries. With the latest release one can easily use or
+switch the underlying tool for `:GoDef`.  To change it back to `godef` use the
+following setting:
 
 ```vim
 let g:go_def_mode = 'godef'
 ```
 
-### Move between functions
+* Currently by default `:GoDecls` and `:GoDeclsDir` shows type and function
+  declarations. This is customizable with the `g:go_decls_includes` setting. By
+  default it's in the form of:
 
-* :GoAlternate
-* :GoDef
-* :GoDefPop
-* :GoDefStack
-* :GoDefStackClear
+```
+let g:go_decls_includes = "func,type"
+```
 
-* :GoDecls
-* :GoDeclsDir
-ctrlp.vim
-]]
-[[
+If you just want to show function declarations, change it to:
+
+```
+let g:go_decls_includes = "func"
+```
 
 # Understand it
 
@@ -1223,4 +1369,19 @@ ctrlp.vim
 * :GoCoverageToggle
 * :GoCoverageClear
 * :GoCoverageBrowser
+
+# Navigating
+
+* :GoAlternate
+* :GoDef
+* :GoDefPop
+* :GoDefStack
+* :GoDefStackClear
+
+* :GoDecls
+* :GoDeclsDir
+ctrlp.vim
+]]
+[[
+
 
