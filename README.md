@@ -1294,9 +1294,123 @@ let g:go_decls_includes = "func"
 
 # Understand it
 
-* :GoInfo
-* :GoDoc
-* :GoDocBrowser
+Writing/editing/changing code is usually something we can do only if understand
+first what the code is doing. vim-go has several ways to make it easy to
+understand what your code is all about. 
+
+### Documentation lookup
+
+Let's start with the basics. Go documentation is very well written and is
+highly integrated into the Go AST as well. If you just write some comments, the
+parser can easily parse it and associate with any node in the AST. So what it
+means is that, we can easily find the documentation in the reverse order. If
+you have the node from an AST, you can easily read the documentation (if you
+have it)!
+
+We have a command called `:GoDoc` that shows any documentation associated with
+the identifier under your cursor. Let us change the content of `main.go` to:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("vim-go")
+	fmt.Println(sayHi())
+	fmt.Println(sayYoo())
+}
+
+// sayHi() returns the string "hi"
+func sayHi() string {
+	return "hi"
+}
+
+func sayYoo() string {
+	return "yoo"
+}
+```
+
+Put you cursor on top of the `Println` function just after the `main` function
+and call `:GoDoc`. You'll see that it vim-go automatically opened a scratch
+window that shows the documentation for you:
+
+```
+import "fmt"
+
+func Println(a ...interface{}) (n int, err error)
+
+Println formats using the default formats for its operands and writes to
+standard output. Spaces are always added between operands and a newline is
+appended. It returns the number of bytes written and any write error
+encountered.
+```
+
+It shows the import path, the function signature and then finally the doc
+comment of the identifier. Initially vim-go was using plain `go doc`, but it
+has some shortcomings, such as not resolving based on a byte identifier. `go
+doc` is great for terminal usages, but it's hard to integrate it into editors.
+Fortunately we have a very useful tool called `gogetdoc`, which resolves and
+retrieves the AST node for the underlying node and outputs the associated doc
+comment.
+
+That's why `:GoDoc` works for any kind of identifiers. If your put your under
+`sayHi()` and call `:GoDoc` you'll see that it shows it as well. And if you put
+it under `sayYoo()` you'll see that it just outputs `no documentation` for AST
+nodes without doc comments.
+
+As usual with other features, we overrided the default normal shortcut `K` so
+that it invokes `:GoDoc` instead of `man` (or something else). It's really easy
+to find the documentation, just hit `K` in normal mode!
+
+`:GoDoc` just shows the documentation for a given identifier. But it's not a
+**documentation explorer**, if you want to explore the documentation there is
+third party pluging that does it:
+[go-explorer](https://github.com/garyburd/go-explorer). There is a open bug to
+include it into vim-go.
+
+### Identifier resolution
+
+Sometimes you want to know what a function is accepting or returning. Or what
+the identifier under your cursor is? Questions like this are common and we have
+a command to answer it.
+
+Using the same `main.go` file, go over the `Println` function and call
+`:GoInfo`. You'll see that the function signature is being printed in the
+statusline. This is really great to see what it's doing, as you don't have to
+jump to the definition and check out what the signature is. 
+
+But calling `:GoInfo` everytime is tedious. We can make some improvements to
+call it faster. As always a way of making it faster is to add a shortcut:
+
+```
+autocmd FileType go nmap <Leader>i <Plug>(go-info)
+```
+
+Now you easily call `:GoInfo` by just hitting `<leader>i`. But there is still
+room to improve it. vim-go has a support to automatically show the information
+whenever you move your cursor. To enable it add the following to your `.vimrc`:
+
+```
+let g:go_auto_type_info = 1
+```
+
+Now whenever you move your cursor on a valid identifier, you'll see that you're
+status line is updated automatically. By default it updates every `800ms`. This
+is a vim setting and can be changed with the `updatetime` setting. To change it
+to `300ms` add the following to your `.vimrc`
+
+```
+set updatetime=300
+```
+
+### Identifier highlighting
+
+:GoInfo
+:GoSameIds
+
+### Guru
+
 * :GoCallees
 * :GoCallers
 * :GoDescribe
@@ -1306,49 +1420,12 @@ let g:go_decls_includes = "func"
 * :GoReferrers
 * :GoGuruScope
 * :GoGuruTags
-
 
 ## Commands
 
 # Editing
-* :GoImport
-* :GoImportAs
-* :GoDrop
-* :GoFmt
-* :GoImports
 * :GoRename
 * :GoImpl
-
-* af
-* if
-
-# Lint
-* :GoLint
-* :GoVet
-* :GoErrCheck
-* :GoMetaLinter
-
-# Documentation/Exploring
-* :GoDoc
-* :GoDocBrowser
-* :GoAlternate
-* :GoDecls
-* :GoDeclsDir
-* :GoDef
-* :GoDefPop
-* :GoDefStack
-* :GoDefStackClear
-* :GoInfo
-
-* :GoCallees
-* :GoCallers
-* :GoDescribe
-* :GoCallstack
-* :GoFreevars
-* :GoChannelPeers
-* :GoReferrers
-* :GoGuruScope
-* :GoGuruTags
 
 # Others
 * :GoPath
@@ -1359,32 +1436,3 @@ let g:go_decls_includes = "func"
 * :GoInstallBinaries
 * :GoUpdateBinaries
 * :AsmFmt
-
-# Go Cmd
-* :GoBuild
-* :GoRun
-* :GoInstall
-* :GoGenerate
-* :GoTest
-* :GoTestFunc
-* :GoTestCompile
-* :GoCoverage
-* :GoCoverageToggle
-* :GoCoverageClear
-* :GoCoverageBrowser
-
-# Navigating
-
-* :GoAlternate
-* :GoDef
-* :GoDefPop
-* :GoDefStack
-* :GoDefStackClear
-
-* :GoDecls
-* :GoDeclsDir
-ctrlp.vim
-]]
-[[
-
-
