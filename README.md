@@ -26,6 +26,7 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
   * [Documentation Lookup](#documentation-lookup)
   * [Identifier resolution](#identifier-resolution)
   * [Identifier higlighting](#identifier-highlighting)
+  * [Guru](#guru)
 
 # Quick Setup
 
@@ -1496,8 +1497,7 @@ Put your cursor on top of the `handler` and call `:GoReferrers". This calls the
 identifier, scanning all necessary packages within the workspace. The result
 will be a quickfix list, so you should be able to jump to the results easily.
 
-
---
+---
 
 Let's move to another example. Change your `main.go` file to:
 
@@ -1595,12 +1595,67 @@ That's how you refactor a piece of code. `:GoFreevars` can be used also to
 understand the complexity of a code. Just run it and see how many variables are
 dependent to it.
 
+---
+
+Let us see how function calls and targets are related. This time create the
+following files. The content of `main.go` should be:
+
+```
+package main
+
+import (
+	"fmt"
+
+	"github.com/fatih/vim-go-tutorial/example"
+)
+
+func main() {
+	Hello(example.GopherCon)
+	Hello(example.Kenya)
+}
+
+func Hello(fn func() string) {
+	fmt.Println("Hello " + fn())
+}
+```
+
+And the file should be under `example/example.go`:
+
+```
+package example
+
+func GopherCon() string {
+	return "GopherCon"
+}
+
+func Kenya() string {
+	return "Kenya"
+}
+```
+
+So jump to the `Hello` function inside `main.go` and put your cursor on top of
+the function call named `fn()`. Execute `:GoCallees`. This command shows the
+possible call targets of the selected function call. As you see it'll show us
+the function declarations inside the `example` function. Those functions are
+the callees, because they were called by the function call named `fn()`.
+
+Jump back to `main.go` again and this time put your cursor on the function
+declaration `Hello()`. What if we want to see the callers of this function?
+Execute `:GoCallers`.
+
+You should see the output:
+
+```
+main.go| 10 col 7 static function call from github.com/fatih/vim-go-tutorial.Main
+main.go| 11 col 7 static function call from github.com/fatih/vim-go-tutorial.Main
+```
+
+As with the other usages you can easily navigate the callers inside the
+quickfix window.
 
 
 * :GoDescribe
 * :GoImplements
-* :GoCallees
-* :GoCallers
 * :GoCallstack
 * :GoChannelPeers
 * :GoGuruScope
