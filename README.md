@@ -1363,13 +1363,13 @@ That's why `:GoDoc` works for any kind of identifiers. If your put your under
 it under `sayYoo()` you'll see that it just outputs `no documentation` for AST
 nodes without doc comments.
 
-As usual with other features, we overrided the default normal shortcut `K` so
+As usual with other features, we override the default normal shortcut `K` so
 that it invokes `:GoDoc` instead of `man` (or something else). It's really easy
 to find the documentation, just hit `K` in normal mode!
 
 `:GoDoc` just shows the documentation for a given identifier. But it's not a
 **documentation explorer**, if you want to explore the documentation there is
-third party pluging that does it:
+third party plugin that does it:
 [go-explorer](https://github.com/garyburd/go-explorer). There is a open bug to
 include it into vim-go.
 
@@ -1384,7 +1384,7 @@ Using the same `main.go` file, go over the `Println` function and call
 statusline. This is really great to see what it's doing, as you don't have to
 jump to the definition and check out what the signature is. 
 
-But calling `:GoInfo` everytime is tedious. We can make some improvements to
+But calling `:GoInfo` every time is tedious. We can make some improvements to
 call it faster. As always a way of making it faster is to add a shortcut:
 
 ```vim
