@@ -1401,15 +1401,53 @@ let g:go_auto_type_info = 1
 Now whenever you move your cursor on a valid identifier, you'll see that you're
 status line is updated automatically. By default it updates every `800ms`. This
 is a vim setting and can be changed with the `updatetime` setting. To change it
-to `300ms` add the following to your `.vimrc`
+to `100ms` add the following to your `.vimrc`
 
 ```vim
-set updatetime=300
+set updatetime=100
 ```
 
 ### Identifier highlighting
 
-:GoSameIds
+Sometimes we just want to quickly see all same identifiers. Such as variables,
+functions, etc.. Suppose you have the following Go code:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("vim-go")
+	err := sayHi()
+	if err != nil {
+		panic(err)
+	}
+}
+
+// sayHi() returns the string "hi"
+func sayHi() error {
+	fmt.Println("hi")
+	return nil
+}
+```
+
+If you put your cursor on top of `err` and call `:GoSameIds` you'll see that
+all the `err` variables get highlighted. Put your cursor no on the `sayHi()`
+function call, and you'll see that the `sayHi()` function identifiers all are
+highlighted. To clear them just call `:GoSameIdsClear`
+
+This however is more useful if we wouldn't call it manually every time. vim-go
+automatically can highlight same identifiers. Add the following to your
+`vimrc`:
+
+```vim
+let g:go_auto_sameids = 1
+```
+
+After restarting your virmc, you'll see now that you don't need to call
+`:GoSameIds` manually anymore. Same identifier variables are now highlighted
+automatically for you.
 
 ### Guru
 
