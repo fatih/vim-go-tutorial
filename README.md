@@ -296,10 +296,10 @@ you can add to your `.vimrc` which does it:
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
-  if l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  elseif l:file =~# '^\f\+_test\.go$'
+  if l:file =~# '^\f\+_test\.go$'
     call go#cmd#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
   endif
 endfunction
 
