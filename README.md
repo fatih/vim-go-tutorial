@@ -23,6 +23,9 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
   * [Go to definition](#go-to-definition)
   * [Move between functions](#move-between-functions)
 12. [Understand it](#Understand-it)
+  * [Documentation Lookup](#documentation-lookup)
+  * [Identifier resolution](#identifier-resolution)
+  * [Identifier higlighting](#identifier-highlighting)
 
 # Quick Setup
 
@@ -1383,7 +1386,7 @@ jump to the definition and check out what the signature is.
 But calling `:GoInfo` everytime is tedious. We can make some improvements to
 call it faster. As always a way of making it faster is to add a shortcut:
 
-```
+```vim
 autocmd FileType go nmap <Leader>i <Plug>(go-info)
 ```
 
@@ -1391,7 +1394,7 @@ Now you easily call `:GoInfo` by just hitting `<leader>i`. But there is still
 room to improve it. vim-go has a support to automatically show the information
 whenever you move your cursor. To enable it add the following to your `.vimrc`:
 
-```
+```vim
 let g:go_auto_type_info = 1
 ```
 
@@ -1400,13 +1403,12 @@ status line is updated automatically. By default it updates every `800ms`. This
 is a vim setting and can be changed with the `updatetime` setting. To change it
 to `300ms` add the following to your `.vimrc`
 
-```
+```vim
 set updatetime=300
 ```
 
 ### Identifier highlighting
 
-:GoInfo
 :GoSameIds
 
 ### Guru
