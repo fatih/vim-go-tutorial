@@ -1449,15 +1449,160 @@ After restarting your virmc, you'll see now that you don't need to call
 `:GoSameIds` manually anymore. Same identifier variables are now highlighted
 automatically for you.
 
+
 ### Guru
 
+The previous feature was using the tool `guru` under the hood. So let's talk a
+little bit about guru. So what is guru? Guru is an editor integrated tool for
+navigating and understanding Go code. There is a user manual that shows all the
+features: [https://golang.org/s/using-guru](https://golang.org/s/using-guru)
+
+Let us use the same example from that manual to show some of the features we've
+integrated into vim-go:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+)
+
+func main() {
+	h := make(handler)
+	go counter(h)
+	if err := http.ListenAndServe(":8000", h); err != nil {
+		log.Print(err)
+	}
+}
+
+func counter(ch chan<- int) {
+	for n := 0; ; n++ {
+		ch <- n
+	}
+}
+
+type handler chan int
+
+func (h handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-type", "text/plain")
+	fmt.Fprintf(w, "%s: you are visitor #%d", req.URL, <-h)
+}
+```
+
+Put your cursor on top of the `handler` and call `:GoReferrers". This calls the
+`referrers` mode of `vim-go`, which finds finds references to the selected
+identifier, scanning all necessary packages within the workspace. The result
+will be a quickfix list, so you should be able to jump to the results easily.
+
+
+--
+
+Let's move to another example. Change your `main.go` file to:
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	msg := "Greetings\nfrom\nTurkey\n"
+
+	var count int
+	for i := 0; i < len(msg); i++ {
+		if msg[i] == '\n' {
+			count++
+		}
+	}
+
+	fmt.Println(count)
+}
+```
+
+This is a basic example that just counts the newlines in our `msg` variable. If
+you run it, you'll see that it outputs `3`. 
+
+Assume we want to reuse the newline counting logic somewhere else. Let us
+refactor it. Guru can help us in these situations with the `freevars` mode. The
+`freevars` mode shows variables that are referenced but not defines within a
+given selection. 
+
+Let us select the piece in `visual` mode:
+
+```
+var count int
+for i := 0; i < len(msg); i++ {
+	if msg[i] == '\n' {
+		count++
+	}
+}
+```
+
+After selecting it, call `:GoFreevars`. It should be in form of
+`:'<,'>GoFreevars`. The result is again a quickfix list and it contains all the
+variables that free variables. In our case it's a single variable and the
+result is:
+
+
+```
+var msg string
+```
+
+So how useful is this? This little piece of information is enough to refactor
+it into a standalone function. Create a new function with the following content:
+
+```
+func countLines(msg string) int {
+	var count int
+	for i := 0; i < len(msg); i++ {
+		if msg[i] == '\n' {
+			count++
+		}
+	}
+	return count
+}
+```
+
+You'll see that the content is our previously selected code. And the input to
+the function is the result of `:GoFreevars`, the free variables. We only
+decided what to return (if any). In our case we return the count. Our `main.go` will be in the form of:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	msg := "Greetings\nfrom\nTurkey\n"
+
+	count := countLines(msg)
+	fmt.Println(count)
+}
+
+func countLines(msg string) int {
+	var count int
+	for i := 0; i < len(msg); i++ {
+		if msg[i] == '\n' {
+			count++
+		}
+	}
+	return count
+}
+```
+
+That's how you refactor a piece of code. `:GoFreevars` can be used also to
+understand the complexity of a code. Just run it and see how many variables are
+dependent to it.
+
+
+
+* :GoDescribe
+* :GoImplements
 * :GoCallees
 * :GoCallers
-* :GoDescribe
 * :GoCallstack
-* :GoFreevars
 * :GoChannelPeers
-* :GoReferrers
 * :GoGuruScope
 * :GoGuruTags
 
