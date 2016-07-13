@@ -1501,7 +1501,7 @@ will be a quickfix list, so you should be able to jump to the results easily.
 
 Let's move to another example. Change your `main.go` file to:
 
-```
+```go
 package main
 
 import "fmt"
@@ -1530,7 +1530,7 @@ given selection.
 
 Let us select the piece in `visual` mode:
 
-```
+```go
 var count int
 for i := 0; i < len(msg); i++ {
 	if msg[i] == '\n' {
@@ -1545,14 +1545,14 @@ variables that free variables. In our case it's a single variable and the
 result is:
 
 
-```
+```go
 var msg string
 ```
 
 So how useful is this? This little piece of information is enough to refactor
 it into a standalone function. Create a new function with the following content:
 
-```
+```go
 func countLines(msg string) int {
 	var count int
 	for i := 0; i < len(msg); i++ {
@@ -1600,7 +1600,7 @@ dependent to it.
 Let us see how function calls and targets are related. This time create the
 following files. The content of `main.go` should be:
 
-```
+```go
 package main
 
 import (
@@ -1621,7 +1621,7 @@ func Hello(fn func() string) {
 
 And the file should be under `example/example.go`:
 
-```
+```go
 package example
 
 func GopherCon() string {
@@ -1653,10 +1653,30 @@ main.go| 11 col 7 static function call from github.com/fatih/vim-go-tutorial.Mai
 As with the other usages you can easily navigate the callers inside the
 quickfix window.
 
+Finally there is also the mode `callstack`, which shows an arbitrary path from
+the root of the call graph to the function containing the selection.
+
+
+Put your cursor back to the `fn()` function call inside the `Hello()` function.
+Select the function and call `:GoCallStack`. The output should be like
+(simplified form):
+
+```
+main.go| 15 col 26 Found a call path from root to (...)Hello
+main.go| 14 col 5 (...)Hello
+main.go| 10 col 7 (...)main
+```
+So it starts from line `15`, and then to line `14` and then ends at line `10`.
+This is the graph from the root (which starts from `main()`) to the function we
+selected (in our case `fn()`)
+
+---
+
+---
+
 
 * :GoDescribe
 * :GoImplements
-* :GoCallstack
 * :GoChannelPeers
 * :GoGuruScope
 * :GoGuruTags
