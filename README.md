@@ -979,7 +979,7 @@ save a file (just like `:GoFmt`). To enable it you need to add the following to
 your `.vimrc:`
 
 ```vim
-let go_metalinter_autosave = 1
+let g:go_metalinter_autosave = 1
 ```
 
 What's great is that the checkers for the autosave is different than what you
