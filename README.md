@@ -1669,9 +1669,6 @@ selected (in our case `fn()`)
 
 ---
 
----
-
-
 * :GoDescribe
 * :GoImplements
 * :GoChannelPeers
