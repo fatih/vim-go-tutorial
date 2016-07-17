@@ -69,14 +69,13 @@ go get github.com/fatih/vim-go-tutorial
 
 # Hello World!
 
-Open a new file from your terminal:
+Open the `main.go` file from your terminal:
 
 ```
 vim main.go
 ```
 
-As you see, vim-go automatically populated the content with a simple main
-package. Save the file with `:w`.
+It's a very basic file that prints `vim-go` to stdout.
 
 # Run it
 
@@ -185,10 +184,10 @@ package declaration added:
 package main
 ```
 
-This is done by vim-go automatically. This time it didn't create a sample
-application, instead it detected that the file is inside a valid package and
-therefore created a file based on the package name (in our case the package
-name was `main`)
+This is done by vim-go automatically. It detected that the file is inside a
+valid package and therefore created a file based on the package name (in our
+case the package name was `main`). If there are no files, vim-go automatically
+populates the content with a simple main package.
 
 Update the test file with the following code:
 
