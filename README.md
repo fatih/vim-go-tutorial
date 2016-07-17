@@ -440,7 +440,7 @@ func main() {
 Let's start with something we know already. If save the file, you'll see that
 it'll be formatted automatically. It's enabled by default but can be disabled
 if desired (not sure why you would though :)) with `let g:go_fmt_autosave = 0`.
-Optionally we also provide `:GoFmt` command, which runs `:GoFmt` under the hood.
+Optionally we also provide `:GoFmt` command, which runs `gofmt` under the hood.
 
 Let's print the `"gophercon"` string in all uppercase. For it we're going to use
 the `strings` package. Change the definition to:
