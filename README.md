@@ -221,7 +221,7 @@ Try it yourself: open `main.go` and call `:GoTest`. You'll see the tests will
 be run for you as well.
 
 `:GoTest` times out after 10 seconds by default. This is useful because Vim is
-not async by default. You can change the timeout value with `let g:go_test_timeout = 10s`
+not async by default. You can change the timeout value with `let g:go_test_timeout = '10s'`
 
 We have two more commands that makes it easy to deal with test files. The first
 one is `:GoTestFunc`. This only tests the function under your cursor.
