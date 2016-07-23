@@ -1822,10 +1822,6 @@ Finally, `vim-go` tries to auto complete packages for you while using
 `github.com/fatih/vim-go-tutorial` just type `gi` and hit `tab`, you'll see
 it'll expand to `github.com`
 
----
-
-* :GoGuruTags
-
 # Refactor it
 
 ### Rename identifiers
@@ -2031,15 +2027,11 @@ can manually set the browser via:
 let g:go_play_browser_command = "chrome"
 ```
 
-## Commands
-
-# Editing
-* :GoRename
+## TODO Commands
 * :GoImpl
-
-# Others
+* :GoGuruTags
 * :GoPath
 * :GoFiles
 * :GoDeps
-
 * :AsmFmt
+
