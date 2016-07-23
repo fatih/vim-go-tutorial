@@ -1759,8 +1759,108 @@ list that you can navigate.
 
 ---
 
-* :GoChannelPeers
-* :GoGuruScope
+Let's continue with the same `main.go` file.  Go is famous for it's concurrency
+primitives, such as channels. Tracking how values are send between channels can
+get sometimes hard. To understand it better we have the `peers` mode of `guru`.
+This query shows the set of possible send/receives on the channel operand(send
+or receive operation).
+
+Move your cursor to the following expression and select the whole line:
+
+```go
+ch <- n
+```
+
+Call `:GoChannelPeers`. You'll see a quickfix window with the following content:
+
+```
+main.go|19 col 6| This channel of type chan<- int may be:
+main.go|10 col 11| allocated here
+main.go|19 col 6| sent to, here
+main.go|27 col 53| received from, here
+```
+
+As you see you can see the allocation of the channel, where it's sending and
+receiving from. Because this uses pointer analysis, you have to define a scope.
+
+---
+
+For most of the `guru` commands you don't need any scope to define. What is a
+`scope`? The following excerpt is straight from the `guru`
+[manual](http://golang.org/s/using-guru):
+
+
+> Pointer analysis scope: some queries involve pointer analysis, a technique for
+> answering questions of the form “what might this pointer point to?”.  It is
+> usually too expensive to run pointer analysis over all the packages in the
+> workspace, so these queries require an additional configuration parameter
+> called the scope, which determines the set of packages to analyze.  Set the
+> scope to the application (or set of applications---a client and server,
+> perhaps) on which you are currently working.  Pointer analysis is a
+> whole-program analysis, so the only packages in the scope that matter are the
+> main and test packages.
+> 
+> The scope is typically specified as a comma-separated set of packages, or
+> wildcarded subtrees like github.com/my/dir/...; consult the specific
+> documentation for your editor to find out how to set and vary the scope.
+
+
+`vim-go` automatically tries to be smart and sets the current packages import
+path as the `scope` for you. If the command needs a scope, you're mostly
+covered. Most of the times this is enough, but for some queries you might to
+change the scope setting. To make it easy to change the `scope` on the fly with
+have a specific setting called `:GoGuruScope`
+
+If you call it, it'll return an error: `guru scope is not set`. Let us change
+it explicitly to the `github.com/fatih/vim-go-tutorial" scope: 
+
+```
+:GoGuruScope github.com/fatih/vim-go-tutorial
+```
+
+You should see the message:
+
+```
+guru scope changed to: github.com/fatih/vim-go-tutorial
+```
+
+If you run `:GoGuruScope` without any arguments, it'll output the following
+
+```
+current guru scope: github.com/fatih/vim-go-tutorial
+```
+
+To select the whole `GOPATH` you can use the `...` argument:
+
+```
+:GoGuruScope ...
+```
+
+You can also define multiple packages and also subdirectories. The following
+example selects all packages under `github.com` and the `golang.org/x/tools`
+package:
+
+```
+:GoGuruScope github.com/... golang.org/x/tools
+```
+
+Finally you can exclude packags by prepending the `-` (negative) sign to a
+package. The following example selects all packages under `encoding` but not
+`encoding/xml`:
+
+```
+:GoGuruScope encoding/... -encoding/xml
+```
+
+`vim-go` tries to auto complete packages for you while using `:GoGuruScope` as
+well. So when you try to write `github.com/fatih/vim-go-tutorial` just type
+`gi` and hit `tab`, you'll see it'll expand to `github.com`
+
+
+
+
+
+* :GoWhichErrs
 * :GoGuruTags
 
 ## Commands
