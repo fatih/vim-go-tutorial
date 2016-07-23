@@ -22,12 +22,15 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
   * [Alternate files](#alternate-files)
   * [Go to definition](#go-to-definition)
   * [Move between functions](#move-between-functions)
-12. [Understand it](#Understand-it)
+12. [Understand it](#understand-it)
   * [Documentation Lookup](#documentation-lookup)
   * [Identifier resolution](#identifier-resolution)
   * [Identifier higlighting](#identifier-highlighting)
   * [Guru](#guru)
-12. [Share it](#Share-it)
+13. [Refactor it](#refactor-it)
+  * [Rename identifiers](#rename-identifiers)
+  * [Extract function](#extract-function)
+14. [Share it](#share-it)
 
 # Quick Setup
 
@@ -59,9 +62,10 @@ vim -c "GoInstallBinaries" -c "qa"
 Or open Vim and execute `:GoInstallBinaries`. This is a `vim-go` command that
 installs all `vim-go` dependencies for you. It doesn't download pre compiled
 binaries, instead it calls `go get` under the hood, so the binaries are all
-compiled in your host machine(which is both safe and simplifies the
+compiled in your host machine (which is both safe and simplifies the
 installation process as we don't need to provide binaries for multiple
-platforms). 
+platforms). If you already have some of the dependencies (such as `guru`,
+`goimports`) call `:GoUpdateBinaries` to update the binaries. 
 
 For the tutorial, all our examples will be under
 `GOPATH/src/github.com/fatih/vim-go-tutorial/`. Please be sure you're inside
@@ -1517,104 +1521,6 @@ will be a quickfix list, so you should be able to jump to the results easily.
 
 ---
 
-Let's move to another example. Change your `main.go` file to:
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-	msg := "Greetings\nfrom\nTurkey\n"
-
-	var count int
-	for i := 0; i < len(msg); i++ {
-		if msg[i] == '\n' {
-			count++
-		}
-	}
-
-	fmt.Println(count)
-}
-```
-
-This is a basic example that just counts the newlines in our `msg` variable. If
-you run it, you'll see that it outputs `3`. 
-
-Assume we want to reuse the newline counting logic somewhere else. Let us
-refactor it. Guru can help us in these situations with the `freevars` mode. The
-`freevars` mode shows variables that are referenced but not defined within a
-given selection. 
-
-Let us select the piece in `visual` mode:
-
-```go
-var count int
-for i := 0; i < len(msg); i++ {
-	if msg[i] == '\n' {
-		count++
-	}
-}
-```
-
-After selecting it, call `:GoFreevars`. It should be in form of
-`:'<,'>GoFreevars`. The result is again a quickfix list and it contains all the
-variables that free variables. In our case it's a single variable and the
-result is:
-
-
-```go
-var msg string
-```
-
-So how useful is this? This little piece of information is enough to refactor
-it into a standalone function. Create a new function with the following content:
-
-```go
-func countLines(msg string) int {
-	var count int
-	for i := 0; i < len(msg); i++ {
-		if msg[i] == '\n' {
-			count++
-		}
-	}
-	return count
-}
-```
-
-You'll see that the content is our previously selected code. And the input to
-the function is the result of `:GoFreevars`, the free variables. We only
-decided what to return (if any). In our case we return the count. Our `main.go` will be in the form of:
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-	msg := "Greetings\nfrom\nTurkey\n"
-
-	count := countLines(msg)
-	fmt.Println(count)
-}
-
-func countLines(msg string) int {
-	var count int
-	for i := 0; i < len(msg); i++ {
-		if msg[i] == '\n' {
-			count++
-		}
-	}
-	return count
-}
-```
-
-That's how you refactor a piece of code. `:GoFreevars` can be used also to
-understand the complexity of a code. Just run it and see how many variables are
-dependent to it.
-
----
-
 Let us see how function calls and targets are related. This time create the
 following files. The content of `main.go` should be:
 
@@ -1916,8 +1822,170 @@ Finally, `vim-go` tries to auto complete packages for you while using
 `github.com/fatih/vim-go-tutorial` just type `gi` and hit `tab`, you'll see
 it'll expand to `github.com`
 
+---
 
 * :GoGuruTags
+
+# Refactor it
+
+### Rename identifiers
+
+Renaming identifiers is one of the most common tasks. But it's also something
+that needs to be done carefully to not break other packages as well. Also just
+using a tool like `sed` is sometimes not useful, as you want AST aware
+renaming, so it only should rename identifiers that are part of the AST (it
+should not rename for example identifiers in other non Go files, say build
+scripts)
+
+There is a tool that does renaming for you, which is called `gorename`.
+`vim-go` uses the `:GoRename` command to use `gorename` under the hood.  Let us
+change `main.go` to the following content:
+
+```go
+
+package main
+
+import "fmt"
+
+type Server struct {
+	name string
+}
+
+func main() {
+	s := Server{name: "Alper"}
+	fmt.Println(s.name) // print the server name
+}
+
+func name() string {
+	return "Zeynep"
+}
+```
+
+Put your cursor on top of the `name` field inside the `Server` struct and call
+`:GoRename bar`.  You'll see all `name` references are renamed to `bar`. The
+final final conten would look like:
+
+```go
+package main
+
+import "fmt"
+
+type Server struct {
+	bar string
+}
+
+func main() {
+	s := Server{bar: "Alper"}
+	fmt.Println(s.bar) // print the server name
+}
+
+func name() string {
+	return "Zeynep"
+}
+```
+
+As you see only the necessary identifiers are renamed. But the function `name`
+or the string inside the comment is not renamed. What even better is that
+`:GoRename` sarches all packages under `GOPATH` and renames all identifiers
+that depends on the identifier. It's a very powerful tool.
+
+### Extract function
+
+Let's move to another example. Change your `main.go` file to:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	msg := "Greetings\nfrom\nTurkey\n"
+
+	var count int
+	for i := 0; i < len(msg); i++ {
+		if msg[i] == '\n' {
+			count++
+		}
+	}
+
+	fmt.Println(count)
+}
+```
+
+This is a basic example that just counts the newlines in our `msg` variable. If
+you run it, you'll see that it outputs `3`. 
+
+Assume we want to reuse the newline counting logic somewhere else. Let us
+refactor it. Guru can help us in these situations with the `freevars` mode. The
+`freevars` mode shows variables that are referenced but not defined within a
+given selection. 
+
+Let us select the piece in `visual` mode:
+
+```go
+var count int
+for i := 0; i < len(msg); i++ {
+	if msg[i] == '\n' {
+		count++
+	}
+}
+```
+
+After selecting it, call `:GoFreevars`. It should be in form of
+`:'<,'>GoFreevars`. The result is again a quickfix list and it contains all the
+variables that free variables. In our case it's a single variable and the
+result is:
+
+
+```go
+var msg string
+```
+
+So how useful is this? This little piece of information is enough to refactor
+it into a standalone function. Create a new function with the following content:
+
+```go
+func countLines(msg string) int {
+	var count int
+	for i := 0; i < len(msg); i++ {
+		if msg[i] == '\n' {
+			count++
+		}
+	}
+	return count
+}
+```
+
+You'll see that the content is our previously selected code. And the input to
+the function is the result of `:GoFreevars`, the free variables. We only
+decided what to return (if any). In our case we return the count. Our `main.go` will be in the form of:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	msg := "Greetings\nfrom\nTurkey\n"
+
+	count := countLines(msg)
+	fmt.Println(count)
+}
+
+func countLines(msg string) int {
+	var count int
+	for i := 0; i < len(msg); i++ {
+		if msg[i] == '\n' {
+			count++
+		}
+	}
+	return count
+}
+```
+
+That's how you refactor a piece of code. `:GoFreevars` can be used also to
+understand the complexity of a code. Just run it and see how many variables are
+dependent to it.
 
 # Share it
 
@@ -1974,5 +2042,4 @@ let g:go_play_browser_command = "chrome"
 * :GoFiles
 * :GoDeps
 
-* :GoUpdateBinaries
 * :AsmFmt
