@@ -27,6 +27,7 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
   * [Identifier resolution](#identifier-resolution)
   * [Identifier higlighting](#identifier-highlighting)
   * [Guru](#guru)
+12. [Share it](#Share-it)
 
 # Quick Setup
 
@@ -1911,6 +1912,47 @@ it'll expand to `github.com`
 
 
 * :GoGuruTags
+
+# Share it
+
+`vim-go` has also features to easily share your code with other via
+https://play.golang.org/. As you know the Go playground is a perfect place to
+share small snippets, exercises or and tips&tricks. There are times you are
+playing with an idea and want to share with others. You copy the code and visit
+play.golang.org and then paste it.  `vim-go` makes all these better with the
+`:GoPlay` command.
+
+First let us change our `main.go` file with the following simple code:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("vim-go")
+}
+```
+
+Now call `:GoPlay` and hit enter. You'll see that `vim-go` automatically
+uploaded your source code `:GoPlay` and also opened a browser tab that shows
+it. But there is more. The snippet link is automatically copied to your
+clipboard as well. Just paste the link to somewhere. You'll see the link is the
+same as what's on play.golang.org
+
+There are two settings to tweak the behavior of `:GoPlay`. If you don't like
+that `vim-go` opens a browser tab for you, you can disable it with:
+
+```
+let g:go_play_open_browser = 0
+```
+
+Secondly, if your browser is misdetected (we're using `open` or `xdg-open`) you
+can manually set the browser via:
+
+```
+let g:go_play_browser_command = "chrome"
+```
 
 ## Commands
 
