@@ -1773,6 +1773,37 @@ it implements. Because a type can implement many interfaces it's a quickfix
 list that you can navigate.
 
 ---
+* :GoWhichErrs
+
+One of the `guru` modes that might be helpful is `whicherrs`. As you know
+errors are just values. So they can be programmed and thus can represent any
+type. See what the `guru` manual says:
+
+> The whicherrs mode reports the set of possible constants, global variables,
+> and concrete types that may appear in a value of type error. This information
+> may be useful when handling errors to ensure all the important cases have
+> been dealt with.
+
+So how do we use it? It's easy. We still use the same `main.go` file. Put your
+cursor on top of `err` identifier which is returned from `http.ListenAndServe`.
+Call `:GoWhichErrs`, you'll see the following output:
+
+```
+main.go|12 col 6| this error may contain these constants:
+/usr/local/go/src/syscall/zerrors_darwin_amd64.go|1171 col 2| syscall.EINVAL
+main.go|12 col 6| this error may contain these dynamic types:
+/usr/local/go/src/syscall/syscall_unix.go|100 col 6| syscall.Errno
+/usr/local/go/src/net/net.go|380 col 6| *net.OpError
+```
+
+This is a classic `quickfix` output and you can navigate between them. You'll
+see that the `err` value may be the `syscall.EINVAL` constant or it also might
+be the dynamic types `syscall.Errno` or `*net.OpError`. As you see this is
+really helpful to implement custom logic to handle the error differently if
+needed. Note that this query needs a guru `scope` to be set. We'll going to
+cover in a moment what a `scope` is and how you can change it dynamically.
+
+---
 
 Let's continue with the same `main.go` file.  Go is famous for it's concurrency
 primitives, such as channels. Tracking how values are send between channels can
@@ -1859,22 +1890,26 @@ package:
 :GoGuruScope github.com/... golang.org/x/tools
 ```
 
-Finally you can exclude packags by prepending the `-` (negative) sign to a
-package. The following example selects all packages under `encoding` but not
+You can exclude packages by prepending the `-` (negative) sign to a package.
+The following example selects all packages under `encoding` but not
 `encoding/xml`:
 
 ```
 :GoGuruScope encoding/... -encoding/xml
 ```
 
-`vim-go` tries to auto complete packages for you while using `:GoGuruScope` as
-well. So when you try to write `github.com/fatih/vim-go-tutorial` just type
-`gi` and hit `tab`, you'll see it'll expand to `github.com`
+To clear the scope just pass an empty string:
+
+```
+:GoGuruScope ""
+```
+
+Finally, `vim-go` tries to auto complete packages for you while using
+`:GoGuruScope` as well. So when you try to write
+`github.com/fatih/vim-go-tutorial` just type `gi` and hit `tab`, you'll see
+it'll expand to `github.com`
 
 
-
-
-* :GoWhichErrs
 * :GoGuruTags
 
 ## Commands
