@@ -56,11 +56,17 @@ gocode, etc...). If you already have them in your PATH, you're good to go.
 vim -c "GoInstallBinaries" -c "qa" 
 ```
 
-Or open Vim and execute `:GoInstallBinaries`
+Or open Vim and execute `:GoInstallBinaries`. This is a `vim-go` command that
+installs all `vim-go` dependencies for you. It doesn't download pre compiled
+binaries, instead it calls `go get` under the hood, so the binaries are all
+compiled in your host machine(which is both safe and simplifies the
+installation process as we don't need to provide binaries for multiple
+platforms). 
 
 For the tutorial, all our examples will be under
-`GOPATH/src/github.com/fatih/vim-go-tutorial/`. Please be sure you're inside this
-folder. Create if necessary. This will make it easy to follow the tutorial.
+`GOPATH/src/github.com/fatih/vim-go-tutorial/`. Please be sure you're inside
+this folder. Create if necessary. This will make it easy to follow the
+tutorial.
 
 If you already have a `GOPATH` set up just execute:
 
@@ -1938,7 +1944,10 @@ Now call `:GoPlay` and hit enter. You'll see that `vim-go` automatically
 uploaded your source code `:GoPlay` and also opened a browser tab that shows
 it. But there is more. The snippet link is automatically copied to your
 clipboard as well. Just paste the link to somewhere. You'll see the link is the
-same as what's on play.golang.org
+same as what's on play.golang.org.
+
+`:GoPlay` also accepts a range. You can select a piece of code and call
+`:GoPlay`. It'll only upload the selected part.
 
 There are two settings to tweak the behavior of `:GoPlay`. If you don't like
 that `vim-go` opens a browser tab for you, you can disable it with:
@@ -1964,8 +1973,6 @@ let g:go_play_browser_command = "chrome"
 * :GoPath
 * :GoFiles
 * :GoDeps
-* :GoPlay (accepts range)
 
-* :GoInstallBinaries
 * :GoUpdateBinaries
 * :AsmFmt
