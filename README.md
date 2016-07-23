@@ -145,21 +145,36 @@ whenever there is an error the quickfix window always will pop up.
 
 ### vimrc improvements
 
-You can add some shortcuts to make it easier to jump between errors in quickfix
+* You can add some shortcuts to make it easier to jump between errors in quickfix
 list:
 
 ```vi
-map <C-n> :cn<CR>
-map <C-m> :cp<CR>
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 ```
 
-I also use these shortcuts to build and run a Go program with `<leader>b` and
+* I also use these shortcuts to build and run a Go program with `<leader>b` and
 `<leader>r`:
 
 ```vim
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
+```
+
+* There are two types of error lists in Vim. One is called `location list` the
+other `quickfix`. Unfortunately the commands for each lists are different. So
+`:cnext` only works for `quickfix` list, for `location lists` you have to use
+`:lnext`. Some of the commands in `vim-go` open a location list, because
+location lists are associated with a window and each window can have a
+separate list. This means you can have multiple windows, and multiple
+location lists, one for `Build`, one for `Check`, one for `Tests`, etc..
+
+Some people prefer to use only `quickfix` though. If you add the following to
+your `vimrc` all lists will be of type `quickfix`:
+
+```vim
+let g:go_list_type = "quickfix"
 ```
 
 # Test it
@@ -1855,7 +1870,6 @@ package. The following example selects all packages under `encoding` but not
 `vim-go` tries to auto complete packages for you while using `:GoGuruScope` as
 well. So when you try to write `github.com/fatih/vim-go-tutorial` just type
 `gi` and hit `tab`, you'll see it'll expand to `github.com`
-
 
 
 
