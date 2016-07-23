@@ -1668,8 +1668,97 @@ selected (in our case `fn()`)
 
 ---
 
-* :GoDescribe
-* :GoImplements
+One of the modes of `guru` is also the `describe` mode. It's just like
+`:GoInfo`, but it's a little bit more advanced (it gives us more information).
+It shows for example the method set of a type if there is any. It shows the declarations of a package if selected.
+
+Let us change the content of our `main.go` file to:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+)
+
+func main() {
+	h := make(handler)
+	go counter(h)
+	if err := http.ListenAndServe(":8000", h); err != nil {
+		log.Print(err)
+	}
+}
+
+func counter(ch chan<- int) {
+	for n := 0; ; n++ {
+		ch <- n
+	}
+}
+
+type handler chan int
+
+func (h handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-type", "text/plain")
+	fmt.Fprintf(w, "%s: you are visitor #%d", req.URL, <-h)
+}
+```
+
+Let's put our cursor on top of the `URL` field or `req.URL` (inside `ServeHTPP`
+function). Call `:GoDescribe`. You'll see a quick fix list populated with the
+following content:
+
+```
+main.go|27 col 48| reference to field URL *net/url.URL
+/usr/local/go/src/net/http/request.go|91 col 2| defined here
+main.go|27 col 48| Methods:
+/usr/local/go/src/net/url/url.go|587 col 15| method (*URL) EscapedPath() string
+/usr/local/go/src/net/url/url.go|844 col 15| method (*URL) IsAbs() bool
+/usr/local/go/src/net/url/url.go|851 col 15| method (*URL) Parse(ref string) (*URL, error)
+/usr/local/go/src/net/url/url.go|897 col 15| method (*URL) Query() Values
+/usr/local/go/src/net/url/url.go|904 col 15| method (*URL) RequestURI() string
+/usr/local/go/src/net/url/url.go|865 col 15| method (*URL) ResolveReference(ref *URL) *URL
+/usr/local/go/src/net/url/url.go|662 col 15| method (*URL) String() string
+main.go|27 col 48| Fields:
+/usr/local/go/src/net/url/url.go|310 col 2| Scheme   string
+/usr/local/go/src/net/url/url.go|311 col 2| Opaque   string
+/usr/local/go/src/net/url/url.go|312 col 2| User     *Userinfo
+/usr/local/go/src/net/url/url.go|313 col 2| Host     string
+/usr/local/go/src/net/url/url.go|314 col 2| Path     string
+/usr/local/go/src/net/url/url.go|315 col 2| RawPath  string
+/usr/local/go/src/net/url/url.go|316 col 2| RawQuery string
+/usr/local/go/src/net/url/url.go|317 col 2| Fragment string
+```
+
+You'll see that we can see the definition of the field, the method set and the
+`URL` struct's fields. This is a very useful command and it's there if you need
+it and want to understand the surrounding code. Try and experiment by calling
+`:GoDescribe` on various other identifiers to see what the output is.
+
+---
+
+One of the most asked questions is how to know the interfaces a type is
+implementing. Suppose you have a type and with a method set of several methods.
+You want to know which interface it might implement. The mode `implement` of
+`guru` just does it and it helps to find the interface a type implements.
+
+Just continue with the same previous `main.go` file. Put your cursor on the
+`handler` identifier just after the `main()` function. Call `:GoImplements`
+You'll see a quick fix list populated with the following content:
+
+
+```
+main.go|23 col 6| chan type handler
+/usr/local/go/src/net/http/server.go|57 col 6| implements net/http.Handler
+```
+
+The first line is our selected type and the second line will be the interface
+it implements. Because a type can implement many interfaces it's a quickfix
+list that you can navigate.
+
+---
+
 * :GoChannelPeers
 * :GoGuruScope
 * :GoGuruTags
