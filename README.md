@@ -2027,6 +2027,19 @@ can manually set the browser via:
 let g:go_play_browser_command = "chrome"
 ```
 
+# Donation
+
+This tutorial was created by me on my spare times. If you like it and would
+like to donate, you now you can be a fully supporter by [being a
+patron](https://www.patreon.com/fatih)! 
+
+By being a patron, you are enabling vim-go to grow and mature, helping me to
+invest in bug fixes, new documentation, and improving both current and future
+features. It's completely optional and is just a direct way to support Vim-go's
+ongoing development. Thanks!
+
+[https://www.patreon.com/fatih](https://www.patreon.com/fatih)
+
 ## TODO Commands
 * :GoImpl
 * :GoGuruTags
