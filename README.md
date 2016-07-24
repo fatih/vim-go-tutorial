@@ -30,7 +30,9 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
 13. [Refactor it](#refactor-it)
   * [Rename identifiers](#rename-identifiers)
   * [Extract function](#extract-function)
-14. [Share it](#share-it)
+14. [Generate it](#generate-it)
+  * [Method stubs implementing an interface](#method-stubs-implementing-an-interface)
+15. [Share it](#share-it)
 
 # Quick Setup
 
@@ -1983,6 +1985,90 @@ That's how you refactor a piece of code. `:GoFreevars` can be used also to
 understand the complexity of a code. Just run it and see how many variables are
 dependent to it.
 
+# Generate it
+
+Generation code is a hot topic. Because of the great std libs such as go/ast,
+go/parser, go/printer, etc.. Go has the advantage to create great generators
+easily. 
+
+First we have the `:GoGenerate` command that calls `go generate` under the
+hood. It just works like `:GoBuild`, `:GoTest`, etc.. If there is any errors it
+also shows them so you can easily fix it.
+
+### Method stubs implementing an interface
+
+Interfaces are really great for composition. It makes you code easier to deal
+with it. It's also easier for you to create tests as you can mock functions who
+accept an interface type with a type that implements method for testing.
+
+
+`vim-go` has support for the tool [impl](https://github.com/josharian/impl).
+`impl` generates method stubs that implements a given interface. Let us change
+`main.go`'s content to the following:
+
+```go
+package main
+
+import "fmt"
+
+type T struct{}
+
+func main() {
+	fmt.Println("vim-go")
+}
+```
+
+Put your cursor on top of `T` and type `:GoImpl`. You'll be prompted to write
+an interface. Type `io.ReadWriteCloser` and hit enter. You'll see the content
+changed to:
+
+```go
+package main
+
+import "fmt"
+
+type T struct{}
+
+func (t *T) Read(p []byte) (n int, err error) {
+	panic("not implemented")
+}
+
+func (t *T) Write(p []byte) (n int, err error) {
+	panic("not implemented")
+}
+
+func (t *T) Close() error {
+	panic("not implemented")
+}
+
+func main() {
+	fmt.Println("vim-go")
+}
+```
+
+That's really neat as you see. You can also just type `:GoImpl
+io.ReadWriteCloser` when your on top of a type and it'll do the same. 
+
+But you don't need to put your cursor on top of a type.  You can invoke it from
+everywhere. For example execute this:
+
+```
+:GoImpl b *B io.Stringer
+```
+
+You'll see the following will be created:
+
+```go
+func (b *B) String() string {
+	panic("not implemented")
+}
+```
+
+As you see this is very helpful, especially if you have a large interface with
+large method set. You can easily generate it, and because it uses `panic()`
+this compiles without any problem. Just fill the necessary parts and you're
+done.
+
 # Share it
 
 `vim-go` has also features to easily share your code with other via
@@ -2041,7 +2127,6 @@ ongoing development. Thanks!
 [https://www.patreon.com/fatih](https://www.patreon.com/fatih)
 
 ## TODO Commands
-* :GoImpl
 * :GoGuruTags
 * :GoPath
 * :GoFiles
