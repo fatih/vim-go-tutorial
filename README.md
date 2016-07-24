@@ -26,6 +26,7 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
   * [Documentation Lookup](#documentation-lookup)
   * [Identifier resolution](#identifier-resolution)
   * [Identifier higlighting](#identifier-highlighting)
+  * [Dependencies and files](#dependencies-and-files)
   * [Guru](#guru)
 13. [Refactor it](#refactor-it)
   * [Rename identifiers](#rename-identifiers)
@@ -1474,6 +1475,36 @@ After restarting your virmc, you'll see that you don't need to call
 `:GoSameIds` manually anymore. Matching identifier variables are now highlighted
 automatically for you.
 
+### Dependencies and files
+
+As you know a package can be consist of multiple dependencies and files. Even
+if you have many files inside the directory, only the files that have the
+package clause correctly are part of a package.
+
+To see the files that makes a package you can call the following:
+
+```
+:GoFiles
+```
+
+which will output (my `$GOPATH` is set to `~/Code/Go`):
+
+```
+['/Users/fatih/Code/go/src/github.com/fatih/vim-go-tutorial/main.go']
+```
+
+If you have other files those will be listed as well. Note that this command is
+only for listing Go files that are part of the build. Test files will be not
+listed. 
+
+For showing the dependencies of a file you can call `:GoDeps`. If you call  it
+you'll see:
+
+```
+['errors', 'fmt', 'internal/race', 'io', 'math', 'os', 'reflect', 'runtime',
+'runtime/internal/atomic', 'runtime/internal/sys', 'strconv', 'sync',
+'sync/atomic ', 'syscall', 'time', 'unicode/utf8', 'unsafe']
+```
 
 ### Guru
 
@@ -2182,7 +2213,5 @@ ongoing development. Thanks!
 
 ## TODO Commands
 * :GoPath
-* :GoFiles
-* :GoDeps
 * :AsmFmt
 
