@@ -1819,10 +1819,64 @@ To clear the scope just pass an empty string:
 :GoGuruScope ""
 ```
 
+If you're working on a project where you have to set the scope always to the
+same value and you don't want to call `:GoGuruScope` everytime you start Vim,
+you can also define a permanent scope by adding a setting to your `vimrc`. The
+value needs to be a list of string types. Here are some examples from the
+commands above:
+
+```
+let g:go_guru_scope = ["github.com/fatih/vim-go-tutorial"]
+let g:go_guru_scope = ["..."]
+let g:go_guru_scope = ["github.com/...", "golang.org/x/tools"]
+let g:go_guru_scope = ["encoding/...", "-encoding/xml"]
+```
+
 Finally, `vim-go` tries to auto complete packages for you while using
 `:GoGuruScope` as well. So when you try to write
 `github.com/fatih/vim-go-tutorial` just type `gi` and hit `tab`, you'll see
 it'll expand to `github.com`
+
+---
+
+Another setting that you should be aware are build tags  (also called build
+constraints). For example the following is a build tag you put in your Go
+source code:
+
+```
+// +build linux darwin
+```
+
+Sometimes there might be custom tags in your source code, such as:
+
+```
+// +build mycustomtag
+```
+
+In this case, guru will fail as the underlying `go/build` package will be not
+able to build the package. So all `guru` related commands will fail (even
+`:GoDef` when it uses `guru`). Fortunately `guru` has a `-tags` flag that
+allows us to pass custom tags. To make it easy for `vim-go` users we have a
+`:GoGuruTags`
+
+For the example just call the following:
+
+```
+:GoGuruTags mycustomtag
+```
+
+This will pass this tag to `guru` and from now on it'll work as expected. And
+just like `:GoGuruScope`, you can clear it with:
+
+```
+:GoGuruTags ""
+```
+
+And finally if you wish you can make it permanent with the following setting:
+
+```
+let g:go_guru_tags = "mycustomtag"
+```
 
 # Refactor it
 
@@ -2127,7 +2181,6 @@ ongoing development. Thanks!
 [https://www.patreon.com/fatih](https://www.patreon.com/fatih)
 
 ## TODO Commands
-* :GoGuruTags
 * :GoPath
 * :GoFiles
 * :GoDeps
