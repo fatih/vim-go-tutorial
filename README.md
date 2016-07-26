@@ -1547,10 +1547,10 @@ func (h handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 ```
 
-Put your cursor on top of the `handler` and call `:GoReferrers". This calls the
-`referrers` mode of `vim-go`, which finds finds references to the selected
-identifier, scanning all necessary packages within the workspace. The result
-will be a quickfix list, so you should be able to jump to the results easily.
+Put your cursor on top of the `handler` and call `:GoReferrers`. This calls the
+`referrers` mode of `vim-go`, which finds references to the selected identifier,
+scanning all necessary packages within the workspace. The result will be a
+quickfix list, so you should be able to jump to the results easily.
 
 ---
 
