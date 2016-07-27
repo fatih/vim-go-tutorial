@@ -762,7 +762,7 @@ type foo struct {
 }
 ```
 
-In `insert` mode, type `json` and hit enter. You'll see that it'll be
+In `insert` mode, type `json` and hit tab. You'll see that it'll be
 automatically expanded to valid field tag. The field name is converted
 automatically to a lowercase and put there for you. You should now see the
 following:
