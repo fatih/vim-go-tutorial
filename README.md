@@ -762,7 +762,7 @@ type foo struct {
 }
 ```
 
-In `insert` mode, type `json` and hit enter. You'll see that it'll be
+In `insert` mode, type `json` and hit tab. You'll see that it'll be
 automatically expanded to valid field tag. The field name is converted
 automatically to a lowercase and put there for you. You should now see the
 following:
@@ -1549,10 +1549,10 @@ func (h handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 ```
 
-Put your cursor on top of the `handler` and call `:GoReferrers". This calls the
-`referrers` mode of `vim-go`, which finds finds references to the selected
-identifier, scanning all necessary packages within the workspace. The result
-will be a quickfix list, so you should be able to jump to the results easily.
+Put your cursor on top of the `handler` and call `:GoReferrers`. This calls the
+`referrers` mode of `vim-go`, which finds references to the selected identifier,
+scanning all necessary packages within the workspace. The result will be a
+quickfix list, so you should be able to jump to the results easily.
 
 ---
 
