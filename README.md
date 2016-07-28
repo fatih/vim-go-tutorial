@@ -1513,7 +1513,9 @@ little bit about guru. So what is guru? Guru is an editor integrated tool for
 navigating and understanding Go code. There is a user manual that shows all the
 features: [https://golang.org/s/using-guru](https://golang.org/s/using-guru)
 
-Let us use the same example from that manual to show some of the features we've
+---
+
+Let us use the same examples from that manual to show some of the features we've
 integrated into vim-go:
 
 ```go
@@ -1553,6 +1555,122 @@ identifier, scanning all necessary packages within the workspace. The result
 will be a quickfix list, so you should be able to jump to the results easily.
 
 ---
+
+One of the modes of `guru` is also the `describe` mode. It's just like
+`:GoInfo`, but it's a little bit more advanced (it gives us more information).
+It shows for example the method set of a type if there is any. It shows the
+declarations of a package if selected.
+
+Let's continue with same `main.go` file.  Put the cursor on top of the `URL`
+field or `req.URL` (inside `ServeHTPP` function). Call `:GoDescribe`.  You'll
+see a quick fix list populated with the following content:
+
+```
+main.go|27 col 48| reference to field URL *net/url.URL
+/usr/local/go/src/net/http/request.go|91 col 2| defined here
+main.go|27 col 48| Methods:
+/usr/local/go/src/net/url/url.go|587 col 15| method (*URL) EscapedPath() string
+/usr/local/go/src/net/url/url.go|844 col 15| method (*URL) IsAbs() bool
+/usr/local/go/src/net/url/url.go|851 col 15| method (*URL) Parse(ref string) (*URL, error)
+/usr/local/go/src/net/url/url.go|897 col 15| method (*URL) Query() Values
+/usr/local/go/src/net/url/url.go|904 col 15| method (*URL) RequestURI() string
+/usr/local/go/src/net/url/url.go|865 col 15| method (*URL) ResolveReference(ref *URL) *URL
+/usr/local/go/src/net/url/url.go|662 col 15| method (*URL) String() string
+main.go|27 col 48| Fields:
+/usr/local/go/src/net/url/url.go|310 col 2| Scheme   string
+/usr/local/go/src/net/url/url.go|311 col 2| Opaque   string
+/usr/local/go/src/net/url/url.go|312 col 2| User     *Userinfo
+/usr/local/go/src/net/url/url.go|313 col 2| Host     string
+/usr/local/go/src/net/url/url.go|314 col 2| Path     string
+/usr/local/go/src/net/url/url.go|315 col 2| RawPath  string
+/usr/local/go/src/net/url/url.go|316 col 2| RawQuery string
+/usr/local/go/src/net/url/url.go|317 col 2| Fragment string
+```
+
+You'll see that we can see the definition of the field, the method set and the
+`URL` struct's fields. This is a very useful command and it's there if you need
+it and want to understand the surrounding code. Try and experiment by calling
+`:GoDescribe` on various other identifiers to see what the output is.
+
+---
+
+One of the most asked questions is how to know the interfaces a type is
+implementing. Suppose you have a type and with a method set of several methods.
+You want to know which interface it might implement. The mode `implement` of
+`guru` just does it and it helps to find the interface a type implements.
+
+Just continue with the same previous `main.go` file. Put your cursor on the
+`handler` identifier just after the `main()` function. Call `:GoImplements`
+You'll see a quick fix list populated with the following content:
+
+
+```
+main.go|23 col 6| chan type handler
+/usr/local/go/src/net/http/server.go|57 col 6| implements net/http.Handler
+```
+
+The first line is our selected type and the second line will be the interface
+it implements. Because a type can implement many interfaces it's a quickfix
+list that you can navigate.
+
+---
+
+One of the `guru` modes that might be helpful is `whicherrs`. As you know
+errors are just values. So they can be programmed and thus can represent any
+type. See what the `guru` manual says:
+
+> The whicherrs mode reports the set of possible constants, global variables,
+> and concrete types that may appear in a value of type error. This information
+> may be useful when handling errors to ensure all the important cases have
+> been dealt with.
+
+So how do we use it? It's easy. We still use the same `main.go` file. Put your
+cursor on top of `err` identifier which is returned from `http.ListenAndServe`.
+Call `:GoWhichErrs`, you'll see the following output:
+
+```
+main.go|12 col 6| this error may contain these constants:
+/usr/local/go/src/syscall/zerrors_darwin_amd64.go|1171 col 2| syscall.EINVAL
+main.go|12 col 6| this error may contain these dynamic types:
+/usr/local/go/src/syscall/syscall_unix.go|100 col 6| syscall.Errno
+/usr/local/go/src/net/net.go|380 col 6| *net.OpError
+```
+
+This is a classic `quickfix` output and you can navigate between them. You'll
+see that the `err` value may be the `syscall.EINVAL` constant or it also might
+be the dynamic types `syscall.Errno` or `*net.OpError`. As you see this is
+really helpful to implement custom logic to handle the error differently if
+needed. Note that this query needs a guru `scope` to be set. We'll going to
+cover in a moment what a `scope` is and how you can change it dynamically.
+
+---
+
+Let's continue with the same `main.go` file.  Go is famous for it's concurrency
+primitives, such as channels. Tracking how values are send between channels can
+get sometimes hard. To understand it better we have the `peers` mode of `guru`.
+This query shows the set of possible send/receives on the channel operand(send
+or receive operation).
+
+Move your cursor to the following expression and select the whole line:
+
+```go
+ch <- n
+```
+
+Call `:GoChannelPeers`. You'll see a quickfix window with the following content:
+
+```
+main.go|19 col 6| This channel of type chan<- int may be:
+main.go|10 col 11| allocated here
+main.go|19 col 6| sent to, here
+main.go|27 col 53| received from, here
+```
+
+As you see you can see the allocation of the channel, where it's sending and
+receiving from. Because this uses pointer analysis, you have to define a scope.
+
+---
+
 
 Let us see how function calls and targets are related. This time create the
 following files. The content of `main.go` should be:
@@ -1626,154 +1744,6 @@ main.go| 10 col 7 (...)main
 It starts from line `15`, and then to line `14` and then ends at line `10`.
 This is the graph from the root (which starts from `main()`) to the function we
 selected (in our case `fn()`)
-
----
-
-One of the modes of `guru` is also the `describe` mode. It's just like
-`:GoInfo`, but it's a little bit more advanced (it gives us more information).
-It shows for example the method set of a type if there is any. It shows the declarations of a package if selected.
-
-Let us change the content of our `main.go` file to:
-
-```go
-package main
-
-import (
-	"fmt"
-	"log"
-	"net/http"
-)
-
-func main() {
-	h := make(handler)
-	go counter(h)
-	if err := http.ListenAndServe(":8000", h); err != nil {
-		log.Print(err)
-	}
-}
-
-func counter(ch chan<- int) {
-	for n := 0; ; n++ {
-		ch <- n
-	}
-}
-
-type handler chan int
-
-func (h handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-type", "text/plain")
-	fmt.Fprintf(w, "%s: you are visitor #%d", req.URL, <-h)
-}
-```
-
-Let's put our cursor on top of the `URL` field or `req.URL` (inside `ServeHTPP`
-function). Call `:GoDescribe`. You'll see a quick fix list populated with the
-following content:
-
-```
-main.go|27 col 48| reference to field URL *net/url.URL
-/usr/local/go/src/net/http/request.go|91 col 2| defined here
-main.go|27 col 48| Methods:
-/usr/local/go/src/net/url/url.go|587 col 15| method (*URL) EscapedPath() string
-/usr/local/go/src/net/url/url.go|844 col 15| method (*URL) IsAbs() bool
-/usr/local/go/src/net/url/url.go|851 col 15| method (*URL) Parse(ref string) (*URL, error)
-/usr/local/go/src/net/url/url.go|897 col 15| method (*URL) Query() Values
-/usr/local/go/src/net/url/url.go|904 col 15| method (*URL) RequestURI() string
-/usr/local/go/src/net/url/url.go|865 col 15| method (*URL) ResolveReference(ref *URL) *URL
-/usr/local/go/src/net/url/url.go|662 col 15| method (*URL) String() string
-main.go|27 col 48| Fields:
-/usr/local/go/src/net/url/url.go|310 col 2| Scheme   string
-/usr/local/go/src/net/url/url.go|311 col 2| Opaque   string
-/usr/local/go/src/net/url/url.go|312 col 2| User     *Userinfo
-/usr/local/go/src/net/url/url.go|313 col 2| Host     string
-/usr/local/go/src/net/url/url.go|314 col 2| Path     string
-/usr/local/go/src/net/url/url.go|315 col 2| RawPath  string
-/usr/local/go/src/net/url/url.go|316 col 2| RawQuery string
-/usr/local/go/src/net/url/url.go|317 col 2| Fragment string
-```
-
-You'll see that we can see the definition of the field, the method set and the
-`URL` struct's fields. This is a very useful command and it's there if you need
-it and want to understand the surrounding code. Try and experiment by calling
-`:GoDescribe` on various other identifiers to see what the output is.
-
----
-
-One of the most asked questions is how to know the interfaces a type is
-implementing. Suppose you have a type and with a method set of several methods.
-You want to know which interface it might implement. The mode `implement` of
-`guru` just does it and it helps to find the interface a type implements.
-
-Just continue with the same previous `main.go` file. Put your cursor on the
-`handler` identifier just after the `main()` function. Call `:GoImplements`
-You'll see a quick fix list populated with the following content:
-
-
-```
-main.go|23 col 6| chan type handler
-/usr/local/go/src/net/http/server.go|57 col 6| implements net/http.Handler
-```
-
-The first line is our selected type and the second line will be the interface
-it implements. Because a type can implement many interfaces it's a quickfix
-list that you can navigate.
-
----
-* :GoWhichErrs
-
-One of the `guru` modes that might be helpful is `whicherrs`. As you know
-errors are just values. So they can be programmed and thus can represent any
-type. See what the `guru` manual says:
-
-> The whicherrs mode reports the set of possible constants, global variables,
-> and concrete types that may appear in a value of type error. This information
-> may be useful when handling errors to ensure all the important cases have
-> been dealt with.
-
-So how do we use it? It's easy. We still use the same `main.go` file. Put your
-cursor on top of `err` identifier which is returned from `http.ListenAndServe`.
-Call `:GoWhichErrs`, you'll see the following output:
-
-```
-main.go|12 col 6| this error may contain these constants:
-/usr/local/go/src/syscall/zerrors_darwin_amd64.go|1171 col 2| syscall.EINVAL
-main.go|12 col 6| this error may contain these dynamic types:
-/usr/local/go/src/syscall/syscall_unix.go|100 col 6| syscall.Errno
-/usr/local/go/src/net/net.go|380 col 6| *net.OpError
-```
-
-This is a classic `quickfix` output and you can navigate between them. You'll
-see that the `err` value may be the `syscall.EINVAL` constant or it also might
-be the dynamic types `syscall.Errno` or `*net.OpError`. As you see this is
-really helpful to implement custom logic to handle the error differently if
-needed. Note that this query needs a guru `scope` to be set. We'll going to
-cover in a moment what a `scope` is and how you can change it dynamically.
-
----
-
-Let's continue with the same `main.go` file.  Go is famous for it's concurrency
-primitives, such as channels. Tracking how values are send between channels can
-get sometimes hard. To understand it better we have the `peers` mode of `guru`.
-This query shows the set of possible send/receives on the channel operand(send
-or receive operation).
-
-Move your cursor to the following expression and select the whole line:
-
-```go
-ch <- n
-```
-
-Call `:GoChannelPeers`. You'll see a quickfix window with the following content:
-
-```
-main.go|19 col 6| This channel of type chan<- int may be:
-main.go|10 col 11| allocated here
-main.go|19 col 6| sent to, here
-main.go|27 col 53| received from, here
-```
-
-As you see you can see the allocation of the channel, where it's sending and
-receiving from. Because this uses pointer analysis, you have to define a scope.
 
 ---
 
@@ -1925,7 +1895,6 @@ There is a tool that does renaming for you, which is called `gorename`.
 change `main.go` to the following content:
 
 ```go
-
 package main
 
 import "fmt"
