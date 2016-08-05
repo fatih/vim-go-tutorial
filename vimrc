@@ -1,7 +1,7 @@
 " A sensible vimrc for Go development
 "
-" Please note that the following settings is just are some default that was
-" used by myself for years. However it might be not the case for you (and your
+" Please note that the following settings are some default that was used by 
+" myself for years. However it might be not the case for you (and your
 " environment). I highly encourage to change/adapt the vimrc to your own
 " needs. Think of a vimrc as a garden that needs to be maintained and fostered
 " throughout years. Keep it clean and useful - Fatih Arslan
