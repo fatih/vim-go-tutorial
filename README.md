@@ -1626,7 +1626,7 @@ type. See what the `guru` manual says:
 
 So how do we use it? It's easy. We still use the same `main.go` file. Put your
 cursor on top of `err` identifier which is returned from `http.ListenAndServe`.
-Call `:GoWhichErrs`, you'll see the following output:
+Call `:GoWhicherrs`, you'll see the following output:
 
 ```
 main.go|12 col 6| this error may contain these constants:
