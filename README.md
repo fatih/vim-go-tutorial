@@ -1562,7 +1562,7 @@ It shows for example the method set of a type if there is any. It shows the
 declarations of a package if selected.
 
 Let's continue with same `main.go` file.  Put the cursor on top of the `URL`
-field or `req.URL` (inside `ServeHTPP` function). Call `:GoDescribe`.  You'll
+field or `req.URL` (inside `ServeHTTP` function). Call `:GoDescribe`.  You'll
 see a quick fix list populated with the following content:
 
 ```
