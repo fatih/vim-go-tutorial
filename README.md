@@ -616,7 +616,7 @@ let g:go_textobj_include_function_doc = 1 `motion`. If you don't like comments
 being a part of the function declaration, you can easily disable it with:
 
 ```vim
-let g:go_textobj_include_function_doc = 1
+let g:go_textobj_include_function_doc = 0
 ```
 
 If you are interested in learning more about `motion`, check out the blog post I wrote for
