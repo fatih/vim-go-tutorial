@@ -292,7 +292,7 @@ is very useful if you have a large test which you're editing a lot. Call
 `:GoTestCompile` in the current test file, you should see the following:
 
 ```
-vim-go: [test] PASS
+vim-go: [test] SUCCESS 
 ```
 
 ### vimrc improvements
