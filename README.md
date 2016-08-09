@@ -1230,7 +1230,7 @@ have multiple files (such as tests). A type declaration can be in one file,
 whereas a some functions specific to a certain set of features can be in
 another file. This is where `:GoDeclsDir` is useful. It parses the whole
 directory for the given file and lists all the declarations from the files in the 
-given directory (but not subrirectories).
+given directory (but not subdirectories).
 
 Call `:GoDeclsDir`. You'll see this time it also included the declarations from
 the `main_test.go` file as well. If you type `Bar`, you'll see both the `Bar`
