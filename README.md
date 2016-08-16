@@ -1915,7 +1915,7 @@ func name() string {
 
 Put your cursor on top of the `name` field inside the `Server` struct and call
 `:GoRename bar`.  You'll see all `name` references are renamed to `bar`. The
-final final conten would look like:
+final final content would look like:
 
 ```go
 package main
