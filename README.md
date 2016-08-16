@@ -292,7 +292,7 @@ is very useful if you have a large test which you're editing a lot. Call
 `:GoTestCompile` in the current test file, you should see the following:
 
 ```
-vim-go: [test] PASS
+vim-go: [test] SUCCESS 
 ```
 
 ### vimrc improvements
@@ -1133,7 +1133,7 @@ clear the stack list anytime call `:GoDefStackClear`.
 
 From the previous example that `:GoDef` is nice if you know where you want to
 jump. But what if you don't know what your next destination is? Or you just
-partially partially the name of a function? 
+partially know the name of a function? 
 
 In our `Edit it` section I mentioned a tool called `motion`, which is a
 custom built tool just for vim-go. `motion` has other capabilities as well.
@@ -1229,8 +1229,8 @@ Sometimes just searching within the current file is not enough. A Go package can
 have multiple files (such as tests). A type declaration can be in one file,
 whereas a some functions specific to a certain set of features can be in
 another file. This is where `:GoDeclsDir` is useful. It parses the whole
-directory for the given file and lists all the declarations for the given
-directory.
+directory for the given file and lists all the declarations from the files in the 
+given directory (but not subdirectories).
 
 Call `:GoDeclsDir`. You'll see this time it also included the declarations from
 the `main_test.go` file as well. If you type `Bar`, you'll see both the `Bar`
@@ -1915,7 +1915,7 @@ func name() string {
 
 Put your cursor on top of the `name` field inside the `Server` struct and call
 `:GoRename bar`.  You'll see all `name` references are renamed to `bar`. The
-final final conten would look like:
+final final content would look like:
 
 ```go
 package main
