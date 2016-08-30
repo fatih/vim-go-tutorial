@@ -72,14 +72,14 @@ platforms). If you already have some of the dependencies (such as `guru`,
 
 For the tutorial, all our examples will be under
 `GOPATH/src/github.com/fatih/vim-go-tutorial/`. Please be sure you're inside
-this folder. Create if necessary. This will make it easy to follow the
-tutorial.
-
-If you already have a `GOPATH` set up just execute:
-
+this folder. If you already have a `GOPATH` set up just execute:
 ```
 go get github.com/fatih/vim-go-tutorial
 ```
+This will create the folder needed and will make it easy to follow the
+tutorial. If you do create this folder manually then the above command will not work, but that shouldn't stop you 
+because you can enter the contents of the example in vim.
+
 
 # Hello World!
 
