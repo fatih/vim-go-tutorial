@@ -1734,7 +1734,7 @@ the root of the call graph to the function containing the selection.
 
 
 Put your cursor back to the `fn()` function call inside the `Hello()` function.
-Select the function and call `:GoCallStack`. The output should be like
+Select the function and call `:GoCallstack`. The output should be like
 (simplified form):
 
 ```
