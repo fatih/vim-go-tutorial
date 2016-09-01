@@ -1734,7 +1734,7 @@ the root of the call graph to the function containing the selection.
 
 
 Put your cursor back to the `fn()` function call inside the `Hello()` function.
-Select the function and call `:GoCallStack`. The output should be like
+Select the function and call `:GoCallstack`. The output should be like
 (simplified form):
 
 ```
@@ -1939,7 +1939,7 @@ func name() string {
 
 As you see only the necessary identifiers are renamed. But the function `name`
 or the string inside the comment is not renamed. What even better is that
-`:GoRename` sarches all packages under `GOPATH` and renames all identifiers
+`:GoRename` searches all packages under `GOPATH` and renames all identifiers
 that depends on the identifier. It's a very powerful tool.
 
 ### Extract function
