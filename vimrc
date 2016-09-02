@@ -1,6 +1,6 @@
 " A sensible vimrc for Go development
 "
-" Please note that the following settings are some default that I used 
+" Please note that the following settings are some default that I used
 " for years. However it might be not the case for you (and your
 " environment). I highly encourage to change/adapt the vimrc to your own
 " needs. Think of a vimrc as a garden that needs to be maintained and fostered
@@ -43,7 +43,7 @@ set fileformats=unix,dos,mac    " Prefer Unix over Windows over OS 9 formats
 set noshowmatch                 " Do not show matching brackets by flickering
 set noshowmode                  " We show the mode with airline or lightline
 set ignorecase                  " Search case insensitive...
-set smartcase                   " ... but not it begins with upper case 
+set smartcase                   " ... but not it begins with upper case
 set completeopt=menu,menuone    " Show popup menu, even if there is one entry
 set pumheight=10                " Completion window max size
 set nocursorcolumn              " Do not highlight column (speeds up highlighting)
@@ -77,7 +77,7 @@ colorscheme molokai
 " Set leader shortcut to a comma ','. By default it's the backslash
 let mapleader = ","
 
-" Jump to next error with Ctrl-n and previous error with Ctrl-p. Close the
+" Jump to next error with Ctrl-n and previous error with Ctrl-m. Close the
 " quickfix window with <leader>a
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
@@ -126,7 +126,7 @@ augroup go
   autocmd!
 
   " Show by default 4 spaces for a tab
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
   " :GoBuild and :GoTestCompile
   autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
