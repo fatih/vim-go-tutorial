@@ -699,7 +699,7 @@ type foo struct {
 
 func newFoo() (*foo, error) {
 	return &foo{
-		Message:  "foo",
+		Message:  "foo loves bar",
 		Ports: []int{80},
 		ServerName: "Foo",
 	}, nil
