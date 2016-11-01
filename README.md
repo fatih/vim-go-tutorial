@@ -51,15 +51,8 @@ Create `~/.vimrc` with following content:
 
 ```vim
 call plug#begin()
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 call plug#end()
-```
-
-And finally be sure to install all necessary Go tools (such as guru, goimports,
-gocode, etc...). If you already have them in your PATH, you're good to go.
-
-```
-vim -c "GoInstallBinaries" -c "qa" 
 ```
 
 Or open Vim and execute `:GoInstallBinaries`. This is a `vim-go` command that
