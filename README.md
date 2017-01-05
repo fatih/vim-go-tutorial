@@ -398,8 +398,7 @@ only have a test for the `Bar()` function, that is the only function that is
 green. 
 
 To clear the syntax highlighting you can call `:GoCoverageClear`. Let us add a
-test case and see how the coverage changes. Add the following to `main_test.go`
-to:
+test case and see how the coverage changes. Add the following to `main_test.go`:
 
 ```go
 func TestQuz(t *testing.T) {
@@ -479,7 +478,7 @@ main.go|8| undefined: strings in strings.ToLower
 ```
 
 You'll see we get an error because the `strings` package is not imported. vim-go
-has couple of commands to make it easy to manipulate the import declarations.
+has a couple of commands to make it easy to manipulate the import declarations.
 
 We can easily go and edit the file, but instead we're going to use the Vim
 command `:GoImport`. This command adds the given package to the import path.
@@ -1258,7 +1257,7 @@ see what happens. You'll see that you jumped to the `main()` function. Another
 function.
 
 `]]` and `[[` also accepts `counts`. For example if you move to the top again
-and hit `3]]` you'll see that it'll jump the third function in the source file.
+and hit `3]]` you'll see that it'll jump to the third function in the source file.
 And going forward, because these are valid motions, you can apply operators to
 it as well!
 
@@ -1475,7 +1474,7 @@ As you know a package can be consist of multiple dependencies and files. Even
 if you have many files inside the directory, only the files that have the
 package clause correctly are part of a package.
 
-To see the files that makes a package you can call the following:
+To see the files that make a package you can call the following:
 
 ```
 :GoFiles
@@ -1639,7 +1638,7 @@ cover in a moment what a `scope` is and how you can change it dynamically.
 
 ---
 
-Let's continue with the same `main.go` file.  Go is famous for it's concurrency
+Let's continue with the same `main.go` file.  Go is famous for its concurrency
 primitives, such as channels. Tracking how values are send between channels can
 get sometimes hard. To understand it better we have the `peers` mode of `guru`.
 This query shows the set of possible send/receives on the channel operand(send
@@ -1909,7 +1908,7 @@ func name() string {
 
 Put your cursor on top of the `name` field inside the `Server` struct and call
 `:GoRename bar`.  You'll see all `name` references are renamed to `bar`. The
-final final content would look like:
+final content would look like:
 
 ```go
 package main
@@ -1979,7 +1978,7 @@ for i := 0; i < len(msg); i++ {
 
 After selecting it, call `:GoFreevars`. It should be in form of
 `:'<,'>GoFreevars`. The result is again a quickfix list and it contains all the
-variables that free variables. In our case it's a single variable and the
+variables that are free variables. In our case it's a single variable and the
 result is:
 
 
@@ -2035,7 +2034,7 @@ dependent to it.
 
 # Generate it
 
-Generation code is a hot topic. Because of the great std libs such as go/ast,
+Code generation is a hot topic. Because of the great std libs such as go/ast,
 go/parser, go/printer, etc.. Go has the advantage to create great generators
 easily. 
 
@@ -2045,9 +2044,9 @@ also shows them so you can easily fix it.
 
 ### Method stubs implementing an interface
 
-Interfaces are really great for composition. It makes you code easier to deal
-with it. It's also easier for you to create tests as you can mock functions who
-accept an interface type with a type that implements method for testing.
+Interfaces are really great for composition. It makes your code easier to deal
+with. It's also easier for you to create tests as you can mock functions that
+accept an interface type with a type that implements methods for testing.
 
 
 `vim-go` has support for the tool [impl](https://github.com/josharian/impl).
@@ -2095,7 +2094,7 @@ func main() {
 ```
 
 That's really neat as you see. You can also just type `:GoImpl
-io.ReadWriteCloser` when your on top of a type and it'll do the same. 
+io.ReadWriteCloser` when you're on top of a type and it'll do the same.
 
 But you don't need to put your cursor on top of a type.  You can invoke it from
 everywhere. For example execute this:
@@ -2163,13 +2162,13 @@ let g:go_play_browser_command = "chrome"
 
 # Donation
 
-This tutorial was created by me on my spare times. If you like it and would
+This tutorial was created by me in my spare time. If you like it and would
 like to donate, you now you can be a fully supporter by [being a
 patron](https://www.patreon.com/fatih)! 
 
 By being a patron, you are enabling vim-go to grow and mature, helping me to
 invest in bug fixes, new documentation, and improving both current and future
-features. It's completely optional and is just a direct way to support Vim-go's
+features. It's completely optional and is just a direct way to support vim-go's
 ongoing development. Thanks!
 
 [https://www.patreon.com/fatih](https://www.patreon.com/fatih)
