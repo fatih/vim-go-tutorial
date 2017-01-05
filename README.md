@@ -455,7 +455,7 @@ package main
      import "fmt"
 
 func main() {
- fmt.Println("    gophercon"     )
+ fmt.Println("gopher"     )
 }
 ```
 
@@ -464,17 +464,17 @@ it'll be formatted automatically. It's enabled by default but can be disabled
 if desired (not sure why you would though :)) with `let g:go_fmt_autosave = 0`.
 Optionally we also provide `:GoFmt` command, which runs `gofmt` under the hood.
 
-Let's print the `"gophercon"` string in all uppercase. For it we're going to use
+Let's print the `"gopher"` string in all uppercase. For it we're going to use
 the `strings` package. Change the definition to:
 
 ```go
-fmt.Println(strings.ToLower("Gopher"))
+fmt.Println(strings.ToUpper("gopher"))
 ```
 
 When you build it you'll get an error of course:
 
 ```
-main.go|8| undefined: strings in strings.ToLower
+main.go|8| undefined: strings in strings.ToUpper
 ```
 
 You'll see we get an error because the `strings` package is not imported. vim-go
