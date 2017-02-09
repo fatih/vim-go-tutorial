@@ -2100,7 +2100,7 @@ But you don't need to put your cursor on top of a type.  You can invoke it from
 everywhere. For example execute this:
 
 ```
-:GoImpl b *B io.Stringer
+:GoImpl b *B fmt.Stringer
 ```
 
 You'll see the following will be created:
