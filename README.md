@@ -25,7 +25,7 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
 12. [Understand it](#understand-it)
   * [Documentation Lookup](#documentation-lookup)
   * [Identifier resolution](#identifier-resolution)
-  * [Identifier higlighting](#identifier-highlighting)
+  * [Identifier highlighting](#identifier-highlighting)
   * [Dependencies and files](#dependencies-and-files)
   * [Guru](#guru)
 13. [Refactor it](#refactor-it)
@@ -730,7 +730,7 @@ lf -> log.Printf()
 ```
 
 Here `ff` and `lf` are special. They dynamically copy the variable name into
-the format string as well. Try it youself. Move your cursor to the end of the
+the format string as well. Try it yourself. Move your cursor to the end of the
 main function and type `ff` and hit tab. After expanding the snippet you can
 start typing. Type `string(out)` and you'll see that both the format string and
 the variadic arguments will be filled with the same string you have typed.
@@ -1388,7 +1388,7 @@ to find the documentation, just hit `K` in normal mode!
 `:GoDoc` just shows the documentation for a given identifier. But it's not a
 **documentation explorer**, if you want to explore the documentation there is
 third-party plugin that does it:
-[go-explorer](https://github.com/garyburd/go-explorer). There is a open bug to
+[go-explorer](https://github.com/garyburd/go-explorer). There is an open bug to
 include it into vim-go.
 
 ### Identifier resolution
@@ -2120,7 +2120,7 @@ done.
 
 `vim-go` has also features to easily share your code with other via
 https://play.golang.org/. As you know the Go playground is a perfect place to
-share small snippets, exercises or and tips&tricks. There are times you are
+share small snippets, exercises or and tips & tricks. There are times you are
 playing with an idea and want to share with others. You copy the code and visit
 play.golang.org and then paste it.  `vim-go` makes all these better with the
 `:GoPlay` command.
