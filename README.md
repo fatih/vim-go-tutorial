@@ -653,7 +653,7 @@ reverse it. If your cursor is still on the `foo` variable, execute `gJ` in
 `normal` mode. You'll see that the field definitions are all joined.
 
 This doesn't use any AST-aware tools, so for example if you type `gJ` on top of
-the fields, you'll see that only two files are joined.
+the fields, you'll see that only two fields are joined.
 
 ### Snippets
 
@@ -1231,7 +1231,7 @@ and `TestBar` functions. This is really great if you just want to get an
 overview of all type and function declarations, and also jump to them.
 
 Let's continue with a question. What if you just want to move to the next or
-previous function? If you current function body is long, you'll probably will
+previous function? If your current function body is long, you'll probably will
 not see the function names. Or maybe there are other declarations between the
 current and other functions.
 
@@ -1470,7 +1470,7 @@ automatically for you.
 
 ### Dependencies and files
 
-As you know a package can be consist of multiple dependencies and files. Even
+As you know a package can consist of multiple dependencies and files. Even
 if you have many files inside the directory, only the files that have the
 package clause correctly are part of a package.
 
