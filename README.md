@@ -1851,25 +1851,25 @@ In this case, guru will fail as the underlying `go/build` package will be not
 able to build the package. So all `guru` related commands will fail (even
 `:GoDef` when it uses `guru`). Fortunately `guru` has a `-tags` flag that
 allows us to pass custom tags. To make it easy for `vim-go` users we have a
-`:GoGuruTags`
+`:GoBuildTags`
 
 For the example just call the following:
 
 ```
-:GoGuruTags mycustomtag
+:GoBuildTags mycustomtag
 ```
 
 This will pass this tag to `guru` and from now on it'll work as expected. And
 just like `:GoGuruScope`, you can clear it with:
 
 ```
-:GoGuruTags ""
+:GoBuildTags ""
 ```
 
 And finally if you wish you can make it permanent with the following setting:
 
 ```
-let g:go_guru_tags = "mycustomtag"
+let g:go_build_tags = "mycustomtag"
 ```
 
 # Refactor it
