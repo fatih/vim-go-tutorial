@@ -799,8 +799,8 @@ let g:go_fmt_fail_silently = 1
   if you wish to change the default value to camel case use the following
   setting:
 
-```vim 
-let g:go_snippet_case_type = "camelcase"
+```vim
+let g:go_addtags_transform = "camelcase"
 ```
 
 # Beautify it
