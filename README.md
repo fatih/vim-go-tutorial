@@ -1464,7 +1464,7 @@ can automatically highlight matching identifiers. Add the following to your
 let g:go_auto_sameids = 1
 ```
 
-After restarting your virmc, you'll see that you don't need to call
+After restarting vim, you'll see that you don't need to call
 `:GoSameIds` manually anymore. Matching identifier variables are now highlighted
 automatically for you.
 
