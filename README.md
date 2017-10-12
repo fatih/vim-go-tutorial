@@ -108,8 +108,7 @@ things differently:
 * It parses any errors and shows them inside a quickfix list 
 * It automatically detects the GOPATH and modifies it if needed (detects
   projects such as `gb`, `Godeps`, etc..)
-* Uses [vim-dispatch](https://github.com/tpope/vim-dispatch) if installed.
-* Runs async if used within NeoVim (coming soon to Vim as well!)
+* Runs async if used within Vim 8.0.xxx or NeoVim
 
 # Fix it
 
