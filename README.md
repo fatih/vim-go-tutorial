@@ -309,7 +309,7 @@ autocmd FileType go nmap <leader>b  <Plug>(go-build)
 
 We're going to add an improved mapping. To make it seamless for
 any Go file we can create a simple Vim function that checks the type of the Go
-file, and execute `:GoBuild` or `:GoTestCompile`.  Below is the helper function
+file, and executes `:GoBuild` or `:GoTestCompile`.  Below is the helper function
 you can add to your `.vimrc`:
 
 ```vim
@@ -1053,8 +1053,8 @@ names. This plugin jumps between a `.c` and `.h` file. In our case
 
 ### Go to definition
 
-One of the most used features is `go to definition`. vim-go had from the
-beginning the command `:GoDef` that jumps to any identifier's declaration. Let
+One of the most used features is `go to definition`. From the beginning, vim-go 
+had the `:GoDef` command that jumps to any identifier's declaration. Let
 us first create a `main.go` file to show it in action. Create it with the
 following content:
 
@@ -1124,7 +1124,7 @@ clear the stack list anytime call `:GoDefStackClear`.
 
 ### Move between functions
 
-From the previous example that `:GoDef` is nice if you know where you want to
+From the previous example we see that `:GoDef` is nice if you know where you want to
 jump. But what if you don't know what your next destination is? Or you just
 partially know the name of a function? 
 
@@ -1289,7 +1289,7 @@ it's useful to have them.
 
 * The "go to definition" command families are very powerful but yet easy to use.
 Under the hood it uses by default the tool `guru` (formerly `oracle`). `guru` has
-an excellent track of being very predictable. It works for dot imports,
+an excellent track record of being very predictable. It works for dot imports,
 vendorized imports and many other non-obvious identifiers. But sometimes it's
 very slow for certain queries. Previously vim-go was using `godef` which is
 very fast on resolving queries. With the latest release one can easily use or
@@ -1300,7 +1300,7 @@ following setting:
 let g:go_def_mode = 'godef'
 ```
 
-* Currently by default `:GoDecls` and `:GoDeclsDir` shows type and function
+* Currently by default `:GoDecls` and `:GoDeclsDir` show type and function
   declarations. This is customizable with the `g:go_decls_includes` setting. By
   default it's in the form of:
 
@@ -1325,7 +1325,7 @@ understand what your code is all about.
 Let's start with the basics. Go documentation is very well-written and is
 highly integrated into the Go AST as well. If you just write some comments, the
 parser can easily parse it and associate with any node in the AST. So what it
-means is that, we can easily find the documentation in the reverse order. If
+means is that we can easily find the documentation in the reverse order. If
 you have the node from an AST, you can easily read the documentation (if you
 have it)!
 
@@ -1376,7 +1376,7 @@ Fortunately we have a very useful tool called `gogetdoc`, which resolves and
 retrieves the AST node for the underlying node and outputs the associated doc
 comment.
 
-That's why `:GoDoc` works for any kind of identifier. If your put your cursor under
+That's why `:GoDoc` works for any kind of identifier. If you put your cursor under
 `sayHi()` and call `:GoDoc` you'll see that it shows it as well. And if you put
 it under `sayYoo()` you'll see that it just outputs `no documentation` for AST
 nodes without doc comments.
@@ -1399,7 +1399,7 @@ a command to answer it.
 
 Using the same `main.go` file, go over the `Println` function and call
 `:GoInfo`. You'll see that the function signature is being printed in the
-statusline. This is really great to see what it's doing, as you don't have to
+status line. This is really great to see what it's doing, as you don't have to
 jump to the definition and check out what the signature is. 
 
 But calling `:GoInfo` every time is tedious. We can make some improvements to
@@ -1501,7 +1501,7 @@ you'll see:
 
 ### Guru
 
-The previous feature was using the tool `guru` under the hood. So let's talk a
+The previous feature was using the `guru` tool under the hood. So let's talk a
 little bit about guru. So what is guru? Guru is an editor integrated tool for
 navigating and understanding Go code. There is a user manual that shows all the
 features: [https://golang.org/s/using-guru](https://golang.org/s/using-guru)
@@ -1555,7 +1555,7 @@ It shows for example the method set of a type if there is any. It shows the
 declarations of a package if selected.
 
 Let's continue with same `main.go` file.  Put the cursor on top of the `URL`
-field or `req.URL` (inside `ServeHTTP` function). Call `:GoDescribe`.  You'll
+field or `req.URL` (inside the `ServeHTTP` function). Call `:GoDescribe`.  You'll
 see a quick fix list populated with the following content:
 
 ```
@@ -1618,8 +1618,8 @@ type. See what the `guru` manual says:
 > been dealt with.
 
 So how do we use it? It's easy. We still use the same `main.go` file. Put your
-cursor on top of `err` identifier which is returned from `http.ListenAndServe`.
-Call `:GoWhicherrs`, you'll see the following output:
+cursor on top of the `err` identifier which is returned from `http.ListenAndServe`.
+Call `:GoWhicherrs` and you'll see the following output:
 
 ```
 main.go|12 col 6| this error may contain these constants:
@@ -1632,16 +1632,16 @@ main.go|12 col 6| this error may contain these dynamic types:
 This is a classic `quickfix` output and you can navigate between them. You'll
 see that the `err` value may be the `syscall.EINVAL` constant or it also might
 be the dynamic types `syscall.Errno` or `*net.OpError`. As you see this is
-really helpful to implement custom logic to handle the error differently if
+really helpful when implementing custom logic to handle the error differently if
 needed. Note that this query needs a guru `scope` to be set. We'll going to
 cover in a moment what a `scope` is and how you can change it dynamically.
 
 ---
 
 Let's continue with the same `main.go` file.  Go is famous for its concurrency
-primitives, such as channels. Tracking how values are send between channels can
-get sometimes hard. To understand it better we have the `peers` mode of `guru`.
-This query shows the set of possible send/receives on the channel operand(send
+primitives, such as channels. Tracking how values are sent between channels can
+sometimes be hard. To understand it better we have the `peers` mode of `guru`.
+This query shows the set of possible send/receives on the channel operand (send
 or receive operation).
 
 Move your cursor to the following expression and select the whole line:
@@ -1740,7 +1740,7 @@ selected (in our case `fn()`)
 
 ---
 
-For most of the `guru` commands you don't need any scope to define. What is a
+For most of the `guru` commands you don't need to define any scope. What is a
 `scope`? The following excerpt is straight from the `guru`
 [manual](http://golang.org/s/using-guru):
 
@@ -1877,7 +1877,7 @@ let g:go_build_tags = "mycustomtag"
 ### Rename identifiers
 
 Renaming identifiers is one of the most common tasks. But it's also something
-that needs to be done carefully to not break other packages as well. Also just
+that needs to be done carefully in order not to break other packages as well. Also just
 using a tool like `sed` is sometimes not useful, as you want AST aware
 renaming, so it only should rename identifiers that are part of the AST (it
 should not rename for example identifiers in other non Go files, say build
@@ -1929,10 +1929,10 @@ func name() string {
 }
 ```
 
-As you see only the necessary identifiers are renamed. But the function `name`
-or the string inside the comment is not renamed. What even better is that
+As you see, only the necessary identifiers are renamed, but the function `name`
+or the string inside the comment is not renamed. What's even better is that
 `:GoRename` searches all packages under `GOPATH` and renames all identifiers
-that depends on the identifier. It's a very powerful tool.
+that depend on the identifier. It's a very powerful tool.
 
 ### Extract function
 
@@ -2035,22 +2035,22 @@ dependent to it.
 # Generate it
 
 Code generation is a hot topic. Because of the great std libs such as go/ast,
-go/parser, go/printer, etc.. Go has the advantage to create great generators
+go/parser, go/printer, etc.. Go has the advantage of being able to create great generators
 easily. 
 
 First we have the `:GoGenerate` command that calls `go generate` under the
-hood. It just works like `:GoBuild`, `:GoTest`, etc.. If there is any errors it
+hood. It just works like `:GoBuild`, `:GoTest`, etc.. If there are any errors it
 also shows them so you can easily fix it.
 
 ### Method stubs implementing an interface
 
-Interfaces are really great for composition. It makes your code easier to deal
+Interfaces are really great for composition. They make your code easier to deal
 with. It's also easier for you to create tests as you can mock functions that
 accept an interface type with a type that implements methods for testing.
 
 
 `vim-go` has support for the tool [impl](https://github.com/josharian/impl).
-`impl` generates method stubs that implements a given interface. Let us change
+`impl` generates method stubs that implement a given interface. Let us change
 `main.go`'s content to the following:
 
 ```go
@@ -2120,7 +2120,7 @@ done.
 
 `vim-go` has also features to easily share your code with other via
 https://play.golang.org/. As you know the Go playground is a perfect place to
-share small snippets, exercises or and tips & tricks. There are times you are
+share small snippets, exercises and/or tips & tricks. There are times you are
 playing with an idea and want to share with others. You copy the code and visit
 play.golang.org and then paste it.  `vim-go` makes all these better with the
 `:GoPlay` command.
