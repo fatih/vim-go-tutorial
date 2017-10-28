@@ -721,7 +721,7 @@ same for it.
 Now let us print the variable `out`. Because variable printing is so popular,
 we have several snippets for it:
 
-```
+```go
 fn -> fmt.Println()
 ff -> fmt.Printf()
 ln -> log.Println()
@@ -737,7 +737,7 @@ the variadic arguments will be filled with the same string you have typed.
 This comes very handy to quickly print variables for debugging.
 Run your file with `:GoRun` and you should see the following output:
 
-```
+```go
 string(out) = {"Message":"foo loves bar","Ports":[80],"ServerName":"Foo"}
 ```
 
@@ -747,7 +747,7 @@ characters. To fix it we can add a json tag to the struct field. vim-go makes it
 very easy to add field tags. Move your cursor to the end of the `Message`
 string line in the field:
 
-```
+```go
 type foo struct {
     Message string .
                    ^ put your cursor here 
@@ -759,7 +759,7 @@ automatically expanded to valid field tag. The field name is converted
 automatically to a lowercase and put there for you. You should now see the
 following:
 
-```
+```go
 type foo struct {
 	Message  string `json:"message"`
 }
@@ -816,7 +816,7 @@ let g:go_highlight_types = 1
 
 This highlights the `bar` and `foo` below:
 
-```
+```go
 type foo struct{
   quz string
 }
@@ -873,7 +873,7 @@ operators such as:
 If you add `let g:go_highlight_extra_types = 1` the following extra types
 will be highlighted as well:
 
-```
+```go
 bytes.(Buffer)
 io.(Reader|ReadSeeker|ReadWriter|ReadCloser|ReadWriteCloser|Writer|WriteCloser|Seeker)
 reflect.(Kind|Type|Value)
@@ -885,14 +885,14 @@ to implement it without looking into the `go/build` document. Let us first add
 the following: `let g:go_highlight_build_constraints = 1` and change your
 `main.go` file to:
 
-```
+```go
 // build linux
 package main
 ```
 
 You'll see that it's gray, thus it's not valid. Prepend `+` to the `build` word and save it again:
 
-```
+```go
 // +build linux
 package main
 ```
@@ -905,7 +905,7 @@ following is buried in the document:
 Let us change our content again and save it to:
 
 
-```
+```go
 // +build linux
 
 package main
@@ -1303,13 +1303,13 @@ let g:go_def_mode = 'godef'
   declarations. This is customizable with the `g:go_decls_includes` setting. By
   default it's in the form of:
 
-```
+```vim
 let g:go_decls_includes = "func,type"
 ```
 
 If you just want to show function declarations, change it to:
 
-```
+```vim
 let g:go_decls_includes = "func"
 ```
 
@@ -1818,7 +1818,7 @@ you can also define a permanent scope by adding a setting to your `vimrc`. The
 value needs to be a list of string types. Here are some examples from the
 commands above:
 
-```
+```vim
 let g:go_guru_scope = ["github.com/fatih/vim-go-tutorial"]
 let g:go_guru_scope = ["..."]
 let g:go_guru_scope = ["github.com/...", "golang.org/x/tools"]
@@ -1836,13 +1836,13 @@ Another setting that you should be aware are build tags  (also called build
 constraints). For example the following is a build tag you put in your Go
 source code:
 
-```
+```go
 // +build linux darwin
 ```
 
 Sometimes there might be custom tags in your source code, such as:
 
-```
+```go
 // +build mycustomtag
 ```
 
@@ -1867,7 +1867,7 @@ just like `:GoGuruScope`, you can clear it with:
 
 And finally if you wish you can make it permanent with the following setting:
 
-```
+```vim
 let g:go_build_tags = "mycustomtag"
 ```
 
@@ -2148,14 +2148,14 @@ same as what's on play.golang.org.
 There are two settings to tweak the behavior of `:GoPlay`. If you don't like
 that `vim-go` opens a browser tab for you, you can disable it with:
 
-```
+```vim
 let g:go_play_open_browser = 0
 ```
 
 Secondly, if your browser is misdetected (we're using `open` or `xdg-open`) you
 can manually set the browser via:
 
-```
+```vim
 let g:go_play_browser_command = "chrome"
 ```
 
