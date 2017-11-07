@@ -427,8 +427,8 @@ Finally, if you don't like vim-go's internal view, you can also call
 `:GoCoverageBrowser`. Under the hood it uses `go tool cover` to create a HTML
 page and then opens it in your default browser. Some people like this more.
 
-Using the `:GoCoverageXXX` commands do not create any kind of temporary files.
-It doesn't pollute your workflow. So you don't have to deal with removing
+Using the `:GoCoverageXXX` commands does not create any kind of temporary files
+and doesn't pollute your workflow. So you don't have to deal with removing
 unwanted files every time.
 
 ### vimrc improvements
