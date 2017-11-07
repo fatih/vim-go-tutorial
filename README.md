@@ -561,7 +561,7 @@ func Bar() string {
 }
 ```
 
-Previously we were using regexp-based text objects. And it lead to problems.
+Previously we were using regexp-based text objects, which leads to problems.
 For example in this example, put your cursor to the anonymous functions' `func`
 keyword and execute `dif` in `normal` mode. You'll see that only the body of
 the anonymous function is deleted.
