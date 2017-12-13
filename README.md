@@ -604,7 +604,7 @@ function body, even though your cursor is outside the function, or it selects
 the function comments as well.
 
 This is really powerful and this all is thanks to the knowledge we have from
-let g:go_textobj_include_function_doc = 1 `motion`. If you don't like comments
+`let g:go_textobj_include_function_doc = 1` `motion`. If you don't like comments
 being a part of the function declaration, you can easily disable it with:
 
 ```vim
