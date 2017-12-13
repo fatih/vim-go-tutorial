@@ -245,7 +245,7 @@ be run for you as well.
 `:GoTest` times out after 10 seconds by default. This is useful because Vim is
 not async by default. You can change the timeout value with `let g:go_test_timeout = '10s'`
 
-We have two more commands that makes it easy to deal with test files. The first
+We have two more commands that make it easy to deal with test files. The first
 one is `:GoTestFunc`. This only tests the function under your cursor.
 Let us change the content of the test file (`main_test.go`) to:
 
@@ -604,7 +604,7 @@ function body, even though your cursor is outside the function, or it selects
 the function comments as well.
 
 This is really powerful and this all is thanks to the knowledge we have from
-let g:go_textobj_include_function_doc = 1 `motion`. If you don't like comments
+`let g:go_textobj_include_function_doc = 1` `motion`. If you don't like comments
 being a part of the function declaration, you can easily disable it with:
 
 ```vim
