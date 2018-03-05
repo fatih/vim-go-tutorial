@@ -1544,7 +1544,7 @@ func (h handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 Put your cursor on top of the `handler` and call `:GoReferrers`. This calls the
 `referrers` mode of `guru`, which finds references to the selected identifier,
 scanning all necessary packages within the workspace. The result will be a
-quickfix list, so you should be able to jump to the results easily.
+location list.
 
 ---
 
@@ -1555,7 +1555,7 @@ declarations of a package if selected.
 
 Let's continue with same `main.go` file.  Put the cursor on top of the `URL`
 field or `req.URL` (inside the `ServeHTTP` function). Call `:GoDescribe`.  You'll
-see a quick fix list populated with the following content:
+see a location list populated with the following content:
 
 ```
 main.go|27 col 48| reference to field URL *net/url.URL
@@ -1593,7 +1593,7 @@ You want to know which interface it might implement. The mode `implement` of
 
 Just continue with the same previous `main.go` file. Put your cursor on the
 `handler` identifier just after the `main()` function. Call `:GoImplements`
-You'll see a quick fix list populated with the following content:
+You'll see a location list populated with the following content:
 
 
 ```
@@ -1602,8 +1602,8 @@ main.go|23 col 6| chan type handler
 ```
 
 The first line is our selected type and the second line will be the interface
-it implements. Because a type can implement many interfaces it's a quickfix
-list that you can navigate.
+it implements. Because a type can implement many interfaces it's a location
+list.
 
 ---
 
@@ -1628,9 +1628,8 @@ main.go|12 col 6| this error may contain these dynamic types:
 /usr/local/go/src/net/net.go|380 col 6| *net.OpError
 ```
 
-This is a classic `quickfix` output and you can navigate between them. You'll
-see that the `err` value may be the `syscall.EINVAL` constant or it also might
-be the dynamic types `syscall.Errno` or `*net.OpError`. As you see this is
+You'll see that the `err` value may be the `syscall.EINVAL` constant or it also
+might be the dynamic types `syscall.Errno` or `*net.OpError`. As you see this is
 really helpful when implementing custom logic to handle the error differently if
 needed. Note that this query needs a guru `scope` to be set. We'll going to
 cover in a moment what a `scope` is and how you can change it dynamically.
@@ -1649,7 +1648,7 @@ Move your cursor to the following expression and select the whole line:
 ch <- n
 ```
 
-Call `:GoChannelPeers`. You'll see a quickfix window with the following content:
+Call `:GoChannelPeers`. You'll see a location list window with the following content:
 
 ```
 main.go|19 col 6| This channel of type chan<- int may be:
@@ -1716,9 +1715,6 @@ You should see the output:
 main.go| 10 col 7 static function call from github.com/fatih/vim-go-tutorial.Main
 main.go| 11 col 7 static function call from github.com/fatih/vim-go-tutorial.Main
 ```
-
-As with the other usages you can easily navigate the callers inside the
-quickfix window.
 
 Finally there is also the `callstack` mode, which shows an arbitrary path from
 the root of the call graph to the function containing the selection.
