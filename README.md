@@ -87,8 +87,10 @@ It's a very basic file that prints `vim-go` to stdout.
 
 # Run it
 
-You can easily run the file with `:GoRun`. Under the hood it calls `go run` for
+You can easily run the file with `:GoRun %`. Under the hood it calls `go run` for
 the current file. You should see that it prints `vim-go`.
+
+For whole package run with `:GoRun`.
 
 # Build it
 
