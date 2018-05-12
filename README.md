@@ -848,16 +848,34 @@ If we add the following:
 
 ```vim
 let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
 ```
 
-We are now also highlighting function names. `Foo` and `main` will now
-be highlighted:
+We are now also highlighting function and method names in declarations. `Foo`
+and `main` will now be highlighted, but `Println` is not as that is an
+invocation:
 
 ```go
 func (t *T) Foo() {}
 
 func main() {
+  fmt.Println("vim-go")
+}
+```
+
+If you also want to highlight function and method invocations, add the
+following:
+
+```vim
+let g:go_highlight_function_calls = 1
+```
+
+Now, `Println` will also be highlighted:
+
+```go
+func (t *T) Foo() {}
+
+func main() {
+  fmt.Println("vim-go")
 }
 ```
 
