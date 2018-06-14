@@ -622,7 +622,7 @@ a part of the function declaration or not?)
 ### Struct split and join
 There is a great plugin that allows you to split or join Go structs. It's
 actually not a Go plugin, but it has support for Go structs. To enable it add
-plugin directive between the `plug` definition into your `vimrc` and run
+plugin directive between the `plug` definition into your `vimrc`, then do a `:source ~/.vimrc` in your vim editor and run
 `:PlugInstall`. Example:
 
 ```vim
@@ -662,7 +662,7 @@ Vim-go supports two popular snippet plugins.
 [Ultisnips](https://github.com/SirVer/ultisnips) and
 [neosnippet](https://github.com/Shougo/neosnippet.vim). By default, 
 if you have `Ultisnips` installed it'll work.  Let us install `ultisnips`
-first. Add it between the `plug` directives in your `vimrc` and then run
+first. Add it between the `plug` directives in your `vimrc`, then do a `:source ~/.vimrc` in your vim editor and then run
 `:PlugInstall`. Example:
 
 ```vim
@@ -977,7 +977,7 @@ let g:molokai_original = 1
 colorscheme molokai
 ```
 
-After that restart Vim and call `:PlugInstall`. This will pull the plugin
+After that restart Vim and call `:source ~/.vimrc`, then `:PlugInstall`. This will pull the plugin
 and install it for you. After the plugin is installed, you need to restart Vim
 again.
 
@@ -1162,7 +1162,7 @@ a certain plugin. The commands are:
 First let us enable these two commands by installing the necessary plugin. The
 plugin is called [ctrlp](https://github.com/ctrlpvim/ctrlp.vim). Long-time Vim
 users have it installed already. To install it add the following line between
-your `plug` directives and call `:PlugInstall` to install it:
+your `plug` directives, then do a `:source ~/.vimrc` in your vim editor and call `:PlugInstall` to install it:
 
 ```vim
 Plug 'ctrlpvim/ctrlp.vim'
