@@ -152,7 +152,7 @@ append the `!` (bang) sign: `:GoBuild!`.
 In all the `go` commands, such as `:GoRun`, `:GoInstall`, `:GoTest`, etc..,
 whenever there is an error the quickfix window always will pop up.
 
-### vimrc improvements
+### .vimrc improvements
 
 * You can add some shortcuts to make it easier to jump between errors in quickfix
 list:
@@ -180,7 +180,7 @@ separate list. This means you can have multiple windows, and multiple
 location lists, one for `Build`, one for `Check`, one for `Tests`, etc..
 
 Some people prefer to use only `quickfix` though. If you add the following to
-your `vimrc` all lists will be of type `quickfix`:
+your `.vimrc` all lists will be of type `quickfix`:
 
 ```vim
 let g:go_list_type = "quickfix"
@@ -290,7 +290,7 @@ is very useful if you have a large test which you're editing a lot. Call
 vim-go: [test] SUCCESS 
 ```
 
-### vimrc improvements
+### .vimrc improvements
 
 * As with `:GoBuild` we can add a mapping to easily call `:GoTest` with a key
 combination. Add the following to your `.vimrc`:
@@ -332,7 +332,7 @@ compile your test files seamlessly.
 
 * By default the leader shortcut is defined as: `\` I've mapped my leader to
 `,` as I find it more useful with the following setting (put this in the
-beginning of .vimrc):
+beginning of `.vimrc`):
 
 ```vim
 let mapleader = ","
@@ -433,7 +433,7 @@ Using the `:GoCoverageXXX` commands does not create any kind of temporary files
 and doesn't pollute your workflow. So you don't have to deal with removing
 unwanted files every time.
 
-### vimrc improvements
+### .vimrc improvements
 
 Add the following to your `.vimrc`:
 
@@ -622,7 +622,7 @@ a part of the function declaration or not?)
 ### Struct split and join
 There is a great plugin that allows you to split or join Go structs. It's
 actually not a Go plugin, but it has support for Go structs. To enable it add
-plugin directive between the `plug` definition into your `vimrc` and run
+plugin directive between the `plug` definition into your `.vimrc` and run
 `:PlugInstall`. Example:
 
 ```vim
@@ -662,7 +662,7 @@ Vim-go supports two popular snippet plugins.
 [Ultisnips](https://github.com/SirVer/ultisnips) and
 [neosnippet](https://github.com/Shougo/neosnippet.vim). By default, 
 if you have `Ultisnips` installed it'll work.  Let us install `ultisnips`
-first. Add it between the `plug` directives in your `vimrc` and then run
+first. Add it between the `plug` directives in your `.vimrc` and then run
 `:PlugInstall`. Example:
 
 ```vim
@@ -779,7 +779,7 @@ type foo struct {
 }
 ```
 
-### vimrc improvements
+### .vimrc improvements
 
 * Don't forget to change `gofmt` to `goimports`
 
@@ -937,14 +937,14 @@ for valid official tags (such as `darwin`,`race`, `ignore`, etc... )
 
 
 Another similar feature is to highlight the Go directive `//go:generate`. If
-you put `let g:go_highlight_generate_tags = 1` into your vimrc, it'll highlight
+you put `let g:go_highlight_generate_tags = 1` into your `.vimrc`, it'll highlight
 a valid directive that is processed with the `go generate` command.
 
 We have a lot more highlight settings, these are just a sneak peek of it. For
 more check out the settings via `:help go-settings`
 
 
-### vimrc improvements
+### .vimrc improvements
 
 * Some people don't like how the tabs are shown. By default Vim shows `8`
   spaces for a single tab. However it's up to us how to represent in Vim. The
@@ -1477,7 +1477,7 @@ highlighted. To clear them just call `:GoSameIdsClear`
 
 This is more useful if we don't have to call it manually every time. vim-go
 can automatically highlight matching identifiers. Add the following to your
-`vimrc`:
+`.vimrc`:
 
 ```vim
 let g:go_auto_sameids = 1
@@ -1830,7 +1830,7 @@ To clear the scope just pass an empty string:
 
 If you're working on a project where you have to set the scope always to the
 same value and you don't want to call `:GoGuruScope` everytime you start Vim,
-you can also define a permanent scope by adding a setting to your `vimrc`. The
+you can also define a permanent scope by adding a setting to your `.vimrc`. The
 value needs to be a list of string types. Here are some examples from the
 commands above:
 
