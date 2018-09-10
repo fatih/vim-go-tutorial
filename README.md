@@ -2178,9 +2178,8 @@ let g:go_play_browser_command = "chrome"
 
 # HTML template
 
-`vim-go` comes with syntax highlighting for Go HTML template. By default it
-is enabled for `.tmpl` files. If you want to enable it for another filetype
-add the following setting to your `.vimrc`:
+By default syntax highlighting for Go HTML template is enabled for `.tmpl` files.
+If you want to enable it for another filetype add the following setting to your `.vimrc`:
 
 ```
 au BufRead,BufNewFile *.gohtml set filetype=gohtmltmpl
