@@ -34,6 +34,7 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
 14. [Generate it](#generate-it)
   * [Method stubs implementing an interface](#method-stubs-implementing-an-interface)
 15. [Share it](#share-it)
+16. [HTML template](#html-template)
 
 # Quick Setup
 
@@ -2173,6 +2174,15 @@ can manually set the browser via:
 
 ```
 let g:go_play_browser_command = "chrome"
+```
+
+# HTML template
+
+By default syntax highlighting for Go HTML template is enabled for `.tmpl` files.
+If you want to enable it for another filetype add the following setting to your `.vimrc`:
+
+```
+au BufRead,BufNewFile *.gohtml set filetype=gohtmltmpl
 ```
 
 # Donation
