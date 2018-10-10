@@ -1,3 +1,11 @@
+# Archived project. No maintenance. 
+
+This project is not maintained anymore and is archived. Feel free to fork and
+make your own changes if needed. For more detail read my blog post: [Taking an indefinite sabbatical from my projects](https://arslan.io/2018/10/09/taking-an-indefinite-sabbatical-from-my-projects/)
+
+Thanks to everyone for their valuable feedback and contributions.
+
+
 # vim-go-tutorial
 
 Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
