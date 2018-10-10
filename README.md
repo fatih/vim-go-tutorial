@@ -677,6 +677,9 @@ There are many helpful snippets. To see the full list check our current
 snippets:
 https://github.com/fatih/vim-go/blob/master/gosnippets/UltiSnips/go.snippets
 
+[UltiSnips and YouCompleteMe may conflict on [tab] button](https://stackoverflow.com/questions/14896327/ultisnips-and-youcompleteme)
+
+
 Let me show some of the snippets that I'm using the most. Change your `main.go`
 content to:
 
